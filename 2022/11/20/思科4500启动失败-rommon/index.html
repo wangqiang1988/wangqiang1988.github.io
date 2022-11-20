@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/cisco.jpg">
 <meta property="article:published_time" content="2022-11-20T09:36:32.000Z">
-<meta property="article:modified_time" content="2022-11-20T09:58:31.123Z">
+<meta property="article:modified_time" content="2022-11-20T10:06:57.289Z">
 <meta property="article:author" content="WangQiang">
 <meta property="article:tag" content="CISCO">
 <meta property="article:tag" content="思科">
@@ -242,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          584 字
+          523 字
         
       </span>
     
@@ -307,11 +307,9 @@
                 <h1 id="思科4500启动失败"><a href="#思科4500启动失败" class="headerlink" title="思科4500启动失败"></a>思科4500启动失败</h1><p>最近因为停电，usp故障有一台cisco4507启动失败，直接启动到了如下模式：<br>rommon&gt;</p>
 <h1 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h1><p>看到是没有正确的看到加载镜像，所以想是不是镜像掉了，上官网搜了一些kb<br>rommon&gt;dev (查看启动项，我发现没有bootflash)</p>
 <p>rommon&gt;dir flash0:<br>也看不到任何东西，我在想是不是设备挂了，所以抱着死马当活马医的态度对设备进行重新引导，修改寄存器值</p>
-<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><ul>
-<li>Change the config register to 0x2102<br>rommon&gt;set （   –Check the settings）</li>
-</ul>
-<p>rommon&gt;unset boot（–Clear the current boot variable）</p>
-<p>rommon&gt;confreg 0x2102</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>rommon&gt;set （检查设置）</p>
+<p>rommon&gt;unset boot（清除设置）</p>
+<p>rommon&gt;confreg 0x2102 (修改寄存器)</p>
 <p>rommon&gt;reset （设备重启)</p>
 <p>如果不行可以尝试下面步骤，我是做了上述步骤就好了<br>配置TFTP</p>
 <p>1.配置接口ip和默认路由<br>rommon&gt;set interface fa1 x.x.x.x 255.255.255.0</p>
