@@ -16,15 +16,22 @@
   <meta name="author" content="WangQiang">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="思科4500启动失败最近因为停电，usp故障有一台cisco4507启动失败，直接启动到了如下模式：rommon&gt; 排查过程看到是没有正确的看到加载镜像，所以想是不是镜像掉了，上官网搜了一些kbrommon&gt;dev (查看启动项，我发现没有bootflash) rommon&gt;dir flash0:也看不到任何东西，我在想是不是设备挂了，所以抱着死马当活马医的态度对设备进行重新引导">
+<meta property="og:type" content="article">
 <meta property="og:title" content="思科4500启动失败 rommon">
 <meta property="og:url" content="http://example.com/2022/11/20/%E6%80%9D%E7%A7%914500%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5-rommon/index.html">
 <meta property="og:site_name" content="WangQiang Blog">
+<meta property="og:description" content="思科4500启动失败最近因为停电，usp故障有一台cisco4507启动失败，直接启动到了如下模式：rommon&gt; 排查过程看到是没有正确的看到加载镜像，所以想是不是镜像掉了，上官网搜了一些kbrommon&gt;dev (查看启动项，我发现没有bootflash) rommon&gt;dir flash0:也看不到任何东西，我在想是不是设备挂了，所以抱着死马当活马医的态度对设备进行重新引导">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cisco.jpg">
 <meta property="article:published_time" content="2022-11-20T09:36:32.000Z">
-<meta property="article:modified_time" content="2022-11-20T09:36:32.549Z">
+<meta property="article:modified_time" content="2022-11-20T09:58:31.123Z">
 <meta property="article:author" content="WangQiang">
+<meta property="article:tag" content="CISCO">
+<meta property="article:tag" content="思科">
+<meta property="article:tag" content="交换机">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/cisco.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -235,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          584 字
         
       </span>
     
@@ -246,7 +253,7 @@
         
         
         
-          1 分钟
+          5 分钟
         
       </span>
     
@@ -297,7 +304,23 @@
             
               <div class="markdown-body">
                 
-                
+                <h1 id="思科4500启动失败"><a href="#思科4500启动失败" class="headerlink" title="思科4500启动失败"></a>思科4500启动失败</h1><p>最近因为停电，usp故障有一台cisco4507启动失败，直接启动到了如下模式：<br>rommon&gt;</p>
+<h1 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h1><p>看到是没有正确的看到加载镜像，所以想是不是镜像掉了，上官网搜了一些kb<br>rommon&gt;dev (查看启动项，我发现没有bootflash)</p>
+<p>rommon&gt;dir flash0:<br>也看不到任何东西，我在想是不是设备挂了，所以抱着死马当活马医的态度对设备进行重新引导，修改寄存器值</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><ul>
+<li>Change the config register to 0x2102<br>rommon&gt;set （   –Check the settings）</li>
+</ul>
+<p>rommon&gt;unset boot（–Clear the current boot variable）</p>
+<p>rommon&gt;confreg 0x2102</p>
+<p>rommon&gt;reset （设备重启)</p>
+<p>如果不行可以尝试下面步骤，我是做了上述步骤就好了<br>配置TFTP</p>
+<p>1.配置接口ip和默认路由<br>rommon&gt;set interface fa1 x.x.x.x 255.255.255.0</p>
+<p>rommon&gt;set ip route default x.x.x.x  </p>
+<p>2.查看是否ping通tftp server</p>
+<p>rommon&gt;set<br>rommon&gt;ping x.x.x.x</p>
+<p>3.从tftp server引导</p>
+<p>rommon&gt;boot t<a href="ftp://x.x.x.x/">ftp://x.x.x.x/</a></p>
+
                 
               </div>
             
@@ -305,6 +328,38 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C/" class="category-chain-item">网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CISCO/">#CISCO</a>
+      
+        <a href="/tags/%E6%80%9D%E7%A7%91/">#思科</a>
+      
+        <a href="/tags/%E4%BA%A4%E6%8D%A2%E6%9C%BA/">#交换机</a>
+      
+    </div>
   
 </div>
 
