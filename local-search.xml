@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>Windows-nps多策略配置用法</title>
+    <link href="/2022/09/28/windows-nps%E5%A4%9A%E7%AD%96%E7%95%A5%E9%85%8D%E7%BD%AE%E7%94%A8%E6%B3%95/"/>
+    <url>/2022/09/28/windows-nps%E5%A4%9A%E7%AD%96%E7%95%A5%E9%85%8D%E7%BD%AE%E7%94%A8%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="环境-amp-需求"><a href="#环境-amp-需求" class="headerlink" title="环境&amp;需求"></a>环境&amp;需求</h1><p>现有环境是多台无线控制器共用一台radius服务器，现在有一台无线控制器发出2个ssid，1个ssid所有员工使用，另1个ssid只有某一个ad的用户组使用</p><h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>首先建一个所有无线控制器和所有用户均能授权访问的策略，如下图：</p><img src="/2022/09/28/windows-nps%E5%A4%9A%E7%AD%96%E7%95%A5%E9%85%8D%E7%BD%AE%E7%94%A8%E6%B3%95/3.jpg" class=""><p>再建一个特殊需求的ssid策略，另外需要把无线控制器单独建一个dot1x策略，并将nas-ip更换成一个另外的ip，这样让nps做条件判断，但是这样做完，还需要做一个deny策略，用于拦截其他用户，如下图：</p><img src="/2022/09/28/windows-nps%E5%A4%9A%E7%AD%96%E7%95%A5%E9%85%8D%E7%BD%AE%E7%94%A8%E6%B3%95/1.jpg" class=""><img src="/2022/09/28/windows-nps%E5%A4%9A%E7%AD%96%E7%95%A5%E9%85%8D%E7%BD%AE%E7%94%A8%E6%B3%95/2.jpg" class=""><p>这样做完即可对不通ssid进行不同用户组认证</p><h1 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h1><p>因为这个坑点还开了个case，就是需要域账号拨入属性根据nps判断（我一直测试的账号是允许拨入属性，折腾了2天）</p><img src="/2022/09/28/windows-nps%E5%A4%9A%E7%AD%96%E7%95%A5%E9%85%8D%E7%BD%AE%E7%94%A8%E6%B3%95/4.jpg" class="">]]></content>
+    
+    
+    <categories>
+      
+      <category>系统</category>
+      
+      <category>无线</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Windows</tag>
+      
+      <tag>Nps</tag>
+      
+      <tag>wifi认证</tag>
+      
+      <tag>无线认证</tag>
+      
+      <tag>802.1x</tag>
+      
+      <tag>认证</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Python执行shell</title>
+    <link href="/2022/09/26/python%E6%89%A7%E8%A1%8Cshell/"/>
+    <url>/2022/09/26/python%E6%89%A7%E8%A1%8Cshell/</url>
+    
+    <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>最近一个脚本遇到了一个问题，就是python里面使用os.system无法顺利执行，再排查过程中顺利解决了这个问题</p><h1 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h1><h3 id="无法使用变量？"><a href="#无法使用变量？" class="headerlink" title="无法使用变量？"></a>无法使用变量？</h3><p>一开始的脚本是这样的</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">os.system(<span class="hljs-string">f&quot;gupload -u ********@qq.com -p password -a &#x27;Running&#x27; /home/ubuntu/github/strava-backup/stravabackup/output/activities/2022/*<span class="hljs-subst">&#123;lastrun&#125;</span>*.fit&quot;</span>)<br></code></pre></td></tr></table></figure><p>然后没有执行成功，再想是不是因为{lastrun}没有生效呢，然后改成了这样</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">command = <span class="hljs-string">f&quot;gupload -u ********@qq.com -p password -a &#x27;Running&#x27; /home/ubuntu/github/strava-backup/stravabackup/output/activities/2022/*<span class="hljs-subst">&#123;lastrun&#125;</span>*.fit&quot;</span><br>os.system(command)<br></code></pre></td></tr></table></figure><p>改成这样发现还是不行,咋办呢？</p><h3 id="打印错误"><a href="#打印错误" class="headerlink" title="打印错误"></a>打印错误</h3><p>然后开始想把错误打印出来，可是用 &gt; log 的方式发现并不行，网上搜到了os.system会有result，那么就把result输出出来看看吧（result&#x3D;0执行成功），借助wxpusher把result输出到微信,所以脚本又改成了这样</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">command = <span class="hljs-string">f&quot;gupload -u ********@qq.com -p password -a &#x27;Running&#x27; /home/ubuntu/github/strava-backup/stravabackup/output/activities/2022/*<span class="hljs-subst">&#123;lastrun&#125;</span>*.fit&quot;</span><br>result = os.system(command)<br><span class="hljs-keyword">if</span> result <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-number">0</span>:<br>    wxpusher(result)<br></code></pre></td></tr></table></figure><p>得到的输出结果是32512，网上查到是因为执行的命令需要写全目录，就改成了这样</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">command = <span class="hljs-string">f&quot;/home/ubuntu/.local/bin/gupload -u ********@qq.com -p password -a &#x27;Running&#x27; /home/ubuntu/github/strava-backup/stravabackup/output/activiti</span><br><span class="hljs-string">es/2022/*<span class="hljs-subst">&#123;lastrun&#125;</span>*.fit&quot;</span><br>result = os.system(command)<br><span class="hljs-keyword">if</span> result <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-number">0</span>:<br>    wxpusher(result)<br></code></pre></td></tr></table></figure><p>问题解决</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>python</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Windows_Dhcp故障转移集群</title>
+    <link href="/2022/09/05/Windows-Dhcp%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E9%9B%86%E7%BE%A4/"/>
+    <url>/2022/09/05/Windows-Dhcp%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E9%9B%86%E7%BE%A4/</url>
+    
+    <content type="html"><![CDATA[<p>之前一直用windoes做dhcp服务器，但是刚开始做的时候故障转移一直没做好，后来开了case，弄明白了这个故障转移的设定</p><h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>往往设置完故障转移之后，认为已经完事儿了，但是还需要设置一些其他参数才能是故障转移完美的运行起来，这里面有一些必要参数的设定</p><h1 id="状态切换间隔"><a href="#状态切换间隔" class="headerlink" title="状态切换间隔"></a>状态切换间隔</h1><p>在dhcp failover环境中，我们首先需要了解状态切换间隔这个机制的说明。参考<a href="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn338979(v=ws.11)">https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn338979(v=ws.11)</a></p><p>状态切换间隔定义了服务器处于与伙伴失去联系（lost contact with the partner）到伙伴关闭状态（partner down state）的时间间隔。</p><p>因为dhcp server在与伙伴失去联系（lost contact with the partner）和伙伴关闭状态（partner down state）的工作机制是不一样的，所以该选项的作用可以提供一个状态转换的时间间隔。</p><p>默认处于关闭状态，时间是1个小时。注意：默认是关闭状态，需要打开！！！</p><img src="/2022/09/05/Windows-Dhcp%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E9%9B%86%E7%BE%A4/dhcp%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB1.jpg" class=""><h1 id="MCLT（最长客户端提前期）"><a href="#MCLT（最长客户端提前期）" class="headerlink" title="MCLT（最长客户端提前期）"></a>MCLT（最长客户端提前期）</h1><p>Maximum client lead time (MCLT)定义了dhcp failover partner服务器可以接管整个dhcp租约信息，并且可以开始为dhcp客户端分配整个地址池的时间。MCLT是一个临时的地址租约时间，在MCLT时间周期内，failover partner服务器只能在自己预留的scope里面（standny模式是5%，load balance是50%）给dhcp客户端分配ip地址，等MCLT这个时间超时以后，可以接管整个作用域来给客户端分配ip地址。</p><p>MCLT的作用可以实现在对应时间周期内，通过自己的作用域来给dhcp客户端分配ip，防止在该时间范围内，出现故障的dhcp服务器回复正常后，同步数据库时还需要额外处理地址冲突的情况，dhcp server处于处理地址冲突状态时，是不响应dhcp客户端的请求的。</p><p>简单来说，可以看上面图中，我设置的是5分钟，也就是当与伙伴失去联系后，我再5分钟内只能分配自己的地址池，5分钟后才能接管全部地址池，另外还有一个作用是客户端第一次获取到dhcp的租约。</p><p>另外，MCLT也定义了一个dhcp failover server在接管整个ip地址池之前，等待进入partner down state的时间。MCLT不能设置为0，默认设置为1个小时。</p><p>也就是加一起需要10分钟才能完成全部地址池的故障转移</p><h1 id="“与伙伴失去联系”状态"><a href="#“与伙伴失去联系”状态" class="headerlink" title="“与伙伴失去联系”状态"></a>“与伙伴失去联系”状态</h1><p>dhcp服务器状态显示为“与伙伴失去联系”时的ip地址分配机制与上面MCLT关联，如果伙伴失去联系状态，5分钟内只能分配自己的地址池，5分钟后才能使用全部地址</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Windows</tag>
+      
+      <tag>Dhcp</tag>
+      
+      <tag>HA</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Ps5_Irc服务</title>
+    <link href="/2022/09/03/Ps5-Irc%E6%9C%8D%E5%8A%A1/"/>
+    <url>/2022/09/03/Ps5-Irc%E6%9C%8D%E5%8A%A1/</url>
+    
+    <content type="html"><![CDATA[<p>PS5用户直播只能用采集卡或者直接推送到twich或者youtube，无意中看到B站有同学用PS5直接推送到B站，但是需要一些技术门槛，按照那个同学的思路整理了自己直播到B站的方式</p><h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>PS5推流到nginx-rtmp，再从nginx-rtmp推流到B站，但是这样的话弹幕看到，所以搞了个IRF转发的代码段。</p><p>PS5跟twitch服务器发送相互数据如下:<br>1.PS5发送PASS<br>2.irc回复特定内容<br>3.PS5发送JOIN<br>4.irc回复特定内容（据实际观察，3、4步重复两次）<br>前四步已经建立了信任连接，之后就是irc单向往PS5发送消息<br>那么我们自己建一个irc服务器，跟PS5交互就行</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><p>使用抽取B站直播间弹幕的用的是<a href="https://github.com/xfgryujk/blivedm%EF%BC%8C%E4%B9%9F%E5%8F%AF%E4%BB%A5%E7%9C%8B%E6%88%91%E7%9A%84github%EF%BC%8C%E9%87%8C%E9%9D%A2%E6%9C%89%E4%BB%A5%E4%B8%8B%E4%BB%A3%E7%A0%81%E6%96%87%E4%BB%B6">https://github.com/xfgryujk/blivedm，也可以看我的github，里面有以下代码文件</a></p><h3 id="1-simple-py中直播间号码改成自己的"><a href="#1-simple-py中直播间号码改成自己的" class="headerlink" title="1.simple.py中直播间号码改成自己的"></a>1.simple.py中直播间号码改成自己的</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">TEST_ROOM_IDS = [<br>    <span class="hljs-number">22509403</span>,<br>]<br></code></pre></td></tr></table></figure><h3 id="2-simple-py中添加像irf发送弹幕代码"><a href="#2-simple-py中添加像irf发送弹幕代码" class="headerlink" title="2.simple.py中添加像irf发送弹幕代码"></a>2.simple.py中添加像irf发送弹幕代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">send</span>(<span class="hljs-params">bmsg</span>):<br>    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br><span class="hljs-comment"># 建立连接:</span><br>    s.connect((<span class="hljs-string">&#x27;10.255.1.101&#x27;</span>, <span class="hljs-number">6667</span>))<br>    s.send(bmsg.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>    s.close()<br></code></pre></td></tr></table></figure><h3 id="3-simple-py中async-def-on-danmuku下面添加代码"><a href="#3-simple-py中async-def-on-danmuku下面添加代码" class="headerlink" title="3.simple.py中async def _on_danmuku下面添加代码"></a>3.simple.py中async def _on_danmuku下面添加代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">send(<span class="hljs-string">&quot;:&quot;</span> + message.uname +<span class="hljs-string">&quot;!&quot;</span> + message.uname + <span class="hljs-string">&quot;@&quot;</span> + message.uname + <span class="hljs-string">&quot;.tmi.twitch.tv PRIVMSG  &quot;</span> + <span class="hljs-string">&quot;#willwillwang :&quot;</span>+ message.msg + <span class="hljs-string">&quot;\r\n&quot;</span>)<br></code></pre></td></tr></table></figure><h3 id="4-Irc服务器程序"><a href="#4-Irc服务器程序" class="headerlink" title="4.Irc服务器程序"></a>4.Irc服务器程序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> socket<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">from</span> threading <span class="hljs-keyword">import</span> Thread<br><span class="hljs-keyword">import</span> threading<br><br>clients = <span class="hljs-built_in">set</span>()<br>clients_lock = threading.Lock()<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">listener</span>(<span class="hljs-params">client, address</span>):<br>    <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;Accepted connection from: &quot;</span>, address)<br>    <span class="hljs-keyword">with</span> clients_lock:<br>        clients.add(client)<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            data = client.recv(<span class="hljs-number">1024</span>)<br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> data:<br>                <span class="hljs-keyword">break</span><br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-built_in">print</span> (<span class="hljs-built_in">repr</span>(data))<br>                <span class="hljs-keyword">if</span> <span class="hljs-string">b&#x27;PASS&#x27;</span> <span class="hljs-keyword">in</span> data:<br>                    msg = <span class="hljs-string">&quot;&quot;&quot;:tmi.twitch.tv 001 willwillwang :Welcome, GLHF!</span><br><span class="hljs-string">:tmi.twitch.tv 001 willwillwang :Welcome, GLHF!</span><br><span class="hljs-string">:tmi.twitch.tv 002 willwillwang :Your host is tmi.twitch.tv</span><br><span class="hljs-string">:tmi.twitch.tv 003 willwillwang :This server is rather new</span><br><span class="hljs-string">:tmi.twitch.tv 004 willwillwang :-</span><br><span class="hljs-string">:tmi.twitch.tv 375 willwillwang :-</span><br><span class="hljs-string">:tmi.twitch.tv 372 willwillwang :You are in a maze of twisty passages, all alike.</span><br><span class="hljs-string">:tmi.twitch.tv 376 willwillwang :&gt;</span><br><span class="hljs-string">&quot;&quot;&quot;</span>             <br>                    data = msg.encode(<span class="hljs-string">&#x27;ascii&#x27;</span>)<br>                <span class="hljs-keyword">if</span> <span class="hljs-string">b&#x27;JOIN&#x27;</span> <span class="hljs-keyword">in</span> data:<br>                    msg = <span class="hljs-string">&quot;&quot;&quot;:willwillwang!willwillwang@willwillwang.tmi.twitch.tv JOIN #willwillwang</span><br><span class="hljs-string">:willwillwang.tmi.twitch.tv 353 willwillwang = #willwillwang :willwillwang</span><br><span class="hljs-string">&quot;&quot;&quot;</span> <br>                    data = msg.encode(<span class="hljs-string">&#x27;ascii&#x27;</span>)<br>                <span class="hljs-keyword">with</span> clients_lock:<br>                    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> clients:<br>                        c.sendall(data)<br>                        <span class="hljs-built_in">print</span>(data.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>    <span class="hljs-keyword">finally</span>:<br>        <span class="hljs-keyword">with</span> clients_lock:<br>            clients.remove(client)<br>            client.close()<br><br>host = <span class="hljs-string">&#x27;0.0.0.0&#x27;</span><br>port = <span class="hljs-number">6667</span><br><br>s = socket.socket()<br>s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="hljs-number">1</span>)<br>s.bind((host,port))<br>s.listen(<span class="hljs-number">3</span>)<br>th = []<br><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;Server is listening for connections...&quot;</span>)<br>    client, address = s.accept()<br>    th.append(Thread(target=listener, args = (client,address)).start())<br><br>s.close()<br></code></pre></td></tr></table></figure><h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>把上面willwillwang的部分更改为自己twitch账号</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>游戏</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>PS5</tag>
+      
+      <tag>B站</tag>
+      
+      <tag>IRC</tag>
+      
+      <tag>弹幕推送</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Ps5在B站直播</title>
+    <link href="/2022/09/03/PS5%E5%9C%A8B%E7%AB%99%E7%9B%B4%E6%92%AD/"/>
+    <url>/2022/09/03/PS5%E5%9C%A8B%E7%AB%99%E7%9B%B4%E6%92%AD/</url>
+    
+    <content type="html"><![CDATA[<p>PS5在B站直播大多数用采集卡（据我所知），想直播又没有采集卡，那么有没有其他方式直播呢，就这这个问题经过2天的研究终于找出了答案。</p><h1 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h1><p>一台电脑 or 群晖（支持docker）<br>能上twitch（魔法）（至少首次登录）</p><h1 id="物理拓扑"><a href="#物理拓扑" class="headerlink" title="物理拓扑"></a>物理拓扑</h1><img src="/2022/09/03/PS5%E5%9C%A8B%E7%AB%99%E7%9B%B4%E6%92%AD/ps5_bilibili.png" class=""><h1 id="ip地址"><a href="#ip地址" class="headerlink" title="ip地址"></a>ip地址</h1><p>IP地址：<br>openwrt-10.255.1.103虚机<br>docker-nginx-rtmp-10.255.1.101虚机<br>b站弹幕获取-10.255.1.101虚机<br>ps-irc-server-10.255.1.101虚机</p><h1 id="思路方法"><a href="#思路方法" class="headerlink" title="思路方法"></a>思路方法</h1><p>接下来一个一个说<br>openwrt：魔法用一次，dns服务，ps5用openwrt当dns服务器<br>魔法用于ps5首次登录twitch验证使用<br>dns用于劫持*.contribute.live-video.net域名到docker-nginx-rtmp，irc.twitch.tv和tmi.twitch.tv劫持到ps-irc-server</p><p>docker-nginx-rtmp: 转发ps5发给twitch的流到B站<br>直接docker部署就行，用的bao3&#x2F;playstation这个老哥的项目</p><p>完成上面两部就能正常直播，下面是弹幕获取。</p><p>b站弹幕获取、ps-irc-server：用于将b站直播间的实时弹幕抓回到本地，并通过ps-irc-server转发到PS5<br>b站弹幕获取是个python程序，也是git项目xfgryujk&#x2F;blivedm<br>ps-irc-server也是个python程序，与b站弹幕获取使用，因为折腾弹幕临时写的，可算作demo版吧，不过够用ps-irc-server</p><p>使用到的东西就这么多，只是个大致流程和思路，openwrt和docker估计大部分人会玩群晖的就会部署，重点说下b站弹幕获取和ps-irc-server使用方式</p><p>1.将ps-irc-server中的sample和twitch复制到b站获取程序的目录下并替换<br>2.将twitch.py和sample.py下面的直播间ID换成自己的，willwillwang换成自己的twitch账号</p><p>另外自带twitch自带直播码率为6000kbps，我带宽也推到了6000kbps，但是在b站观看在画面混乱或高速移动时会有掉分辨率的情况，肯定不如电脑+采集卡，但是胜在方便</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>游戏</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>PS5</tag>
+      
+      <tag>直播</tag>
+      
+      <tag>B站</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Python备份交换机配置</title>
+    <link href="/2022/09/02/Python%E5%A4%87%E4%BB%BD%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%85%8D%E7%BD%AE/"/>
+    <url>/2022/09/02/Python%E5%A4%87%E4%BB%BD%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%85%8D%E7%BD%AE/</url>
+    
+    <content type="html"><![CDATA[<p>作为一个网络工程师，交换机配置备份还是必要的，如果哪天交换机挂了，或者配置端口配置错了，想知道之前的vlan等这些情况都需要查看之前的配置，于是自己用python写了个备份交换机配置的自动化脚本。</p><h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>linux服务器定时运行脚本<br>根据日期创建文件夹并获取配置写入文件</p><h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">48 23 * * * python3 /home/python/switchbk.py &gt; /home/python/switchbk-log<br><span class="hljs-meta prompt_">#</span><span class="language-bash">crontabl设置每天23:48运行</span><br></code></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> telnetlib<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">import</span> re<br><span class="hljs-keyword">import</span> codecs<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">import</span> os<br>now = time.strftime(<span class="hljs-string">&quot;%y%m%d&quot;</span>)<br><span class="hljs-comment">#当前日期</span><br>path = <span class="hljs-string">&quot;/home/python/switchconf/%s&quot;</span>%now<br><span class="hljs-comment">##目录自定义</span><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(path):<br>    os.makedirs(path)<br><br>Hostall = <span class="hljs-string">&quot;&quot;&quot;172.19.254.10</span><br><span class="hljs-string">172.19.254.11</span><br><span class="hljs-string">10.1.1.1</span><br><span class="hljs-string">10.1.1.2</span><br><span class="hljs-string">10.1.1.3</span><br><span class="hljs-string">10.1.1.4</span><br><span class="hljs-string">10.1.1.5</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><br>Hostlist = Hostall.splitlines()<br><span class="hljs-keyword">for</span> Host <span class="hljs-keyword">in</span> Hostlist:<br>    <span class="hljs-keyword">try</span>:<br>        tn = telnetlib.Telnet(Host, timeout=<span class="hljs-number">15</span>)<br>        time.sleep(<span class="hljs-number">3</span>)<br>        tn.write(<span class="hljs-string">b&#x27;admin\n&#x27;</span>)<br>        time.sleep(<span class="hljs-number">1</span>)<br>        tn.write(<span class="hljs-string">b&#x27;admin\n&#x27;</span>)<br>        time.sleep(<span class="hljs-number">3</span>)<br>        tn.write(<span class="hljs-string">b&#x27;dis cur\n&#x27;</span>)<br>        tn.read_some()<br>        tn.write(<span class="hljs-string">b&#x27;quit\n&#x27;</span>)<br><span class="hljs-comment">#        print(&quot;logout&quot;)</span><br>        mac1 = tn.read_all()<br>        f1 = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;%s/%s&#x27;</span>%(path,Host),<span class="hljs-string">&#x27;wb&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;open file&quot;</span>)<br>        f1.write(mac1)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;write file&quot;</span>)<br>        f1.close()<br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;%s finish&quot;</span>%Host)<br>    <span class="hljs-keyword">except</span>:<br>                                                                                                                                                                                   <span class="hljs-number">80</span>,<span class="hljs-number">5</span>          <span class="hljs-number">93</span>%<br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;%s finish&quot;</span>%Host)<br>    <span class="hljs-keyword">except</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;fail %s&quot;</span>%Host)<br></code></pre></td></tr></table></figure><img src="/2022/09/02/Python%E5%A4%87%E4%BB%BD%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%85%8D%E7%BD%AE/20200925150527878.png" class="">]]></content>
+    
+    
+    <categories>
+      
+      <category>网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+      <tag>h3c</tag>
+      
+      <tag>cisco</tag>
+      
+      <tag>backup</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Juniper_srx-udp会话不超时</title>
+    <link href="/2022/09/02/Juniper-srx-udp%E4%BC%9A%E8%AF%9D%E4%B8%8D%E8%B6%85%E6%97%B6/"/>
+    <url>/2022/09/02/Juniper-srx-udp%E4%BC%9A%E8%AF%9D%E4%B8%8D%E8%B6%85%E6%97%B6/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Juniper-srx-udp会话不超时"><a href="#Juniper-srx-udp会话不超时" class="headerlink" title="Juniper_srx-udp会话不超时"></a>Juniper_srx-udp会话不超时</h1><p>最近遇到了一个奇怪问题，内网有sip服务器，我需要与云上的语音服务商进行sip注册，拨打电话，由于外网是双链路冗余并且做了rpm，但是当一条外网链路中断后，语音注册无法切换到另一条链路，观察到的现象是udp<br>不会超时。</p><img src="/2022/09/02/Juniper-srx-udp%E4%BC%9A%E8%AF%9D%E4%B8%8D%E8%B6%85%E6%97%B6/16422276281.png" class=""><p>timeout不会变</p><p>这个原因应该是udp没有三次握手导致，udp一直往外发，防火墙就认为该会话一直存活，所以不会阻断掉。Juniper表示如果需要能自动切换线路，需要两个isp不在同一个zone，所以简单做了routing-instance，模式为<br>forwarding，做完后又做了切换测试，发现还是无法自动切换，再次咨询Juniper，表示需要使用virtual-router模式，再次更改routing-instance为virtual-router模式后，线路可以正常切换。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>juniper srx</tag>
+      
+      <tag>防火墙</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
