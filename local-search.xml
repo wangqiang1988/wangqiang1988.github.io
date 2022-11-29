@@ -4,11 +4,42 @@
   
   
   <entry>
+    <title>telnetlib备份思科交换机10054</title>
+    <link href="/2022/11/29/telnetlib%E5%A4%87%E4%BB%BD%E6%80%9D%E7%A7%91%E4%BA%A4%E6%8D%A2%E6%9C%BA10054/"/>
+    <url>/2022/11/29/telnetlib%E5%A4%87%E4%BB%BD%E6%80%9D%E7%A7%91%E4%BA%A4%E6%8D%A2%E6%9C%BA10054/</url>
+    
+    <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>想用python的telnetlib模块对所有交换机做个自动备份，但是有几台3850交换机汇报如下错误:</p><img src="/2022/11/29/telnetlib%E5%A4%87%E4%BB%BD%E6%80%9D%E7%A7%91%E4%BA%A4%E6%8D%A2%E6%9C%BA10054/10054.jpg" class=""><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">buf = self.sock.recv(50)<br>ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。<br></code></pre></td></tr></table></figure><p>调试了一下午终于在一篇文章中找到了临时解决办法，但是具体原因未知，我分析可能是因为交换机的特定版本对退出后的处理问题，因为有10台左右3850，有6台不行，都不是一个版本。<br>这个链接中找到的答案<a href="http://ruwanindikaprasanna.blogspot.com/2018/02/winerror-10054-existing-connection-was.html">http://ruwanindikaprasanna.blogspot.com/2018/02/winerror-10054-existing-connection-was.html</a></p><h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><p>就是不使用telnetlib的read_all()，改为read_until()</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">tn.write(<span class="hljs-string">b&quot;testtest1234\r\n&quot;</span>)<br>config = tn.read_until(<span class="hljs-string">b&quot;testtest1234&quot;</span>).decode(<span class="hljs-string">&#x27;ascii&#x27;</span>)<br>tn.close()<br></code></pre></td></tr></table></figure><img src="/2022/11/29/telnetlib%E5%A4%87%E4%BB%BD%E6%80%9D%E7%A7%91%E4%BA%A4%E6%8D%A2%E6%9C%BA10054/10054%E8%A7%A3%E5%86%B3.jpg" class="">]]></content>
+    
+    
+    <categories>
+      
+      <category>网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+      <tag>h3c</tag>
+      
+      <tag>cisco</tag>
+      
+      <tag>backup</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>思科4500启动失败 rommon</title>
     <link href="/2022/11/20/%E6%80%9D%E7%A7%914500%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5-rommon/"/>
     <url>/2022/11/20/%E6%80%9D%E7%A7%914500%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5-rommon/</url>
     
-    <content type="html"><![CDATA[<h1 id="思科4500启动失败"><a href="#思科4500启动失败" class="headerlink" title="思科4500启动失败"></a>思科4500启动失败</h1><p>最近因为停电，usp故障有一台cisco4507启动失败，直接启动到了如下模式：<br>rommon&gt;</p><h1 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h1><p>看到是没有正确的看到加载镜像，所以想是不是镜像掉了，上官网搜了一些kb<br>rommon&gt;dev (查看启动项，我发现没有bootflash)</p><p>rommon&gt;dir flash0:<br>也看不到任何东西，我在想是不是设备挂了，所以抱着死马当活马医的态度对设备进行重新引导，修改寄存器值</p><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>rommon&gt;set （检查设置）</p><p>rommon&gt;unset boot（清除设置）</p><p>rommon&gt;confreg 0x2102 (修改寄存器)</p><p>rommon&gt;reset （设备重启)</p><p>如果不行可以尝试下面步骤，我是做了上述步骤就好了<br>配置TFTP</p><p>1.配置接口ip和默认路由<br>rommon&gt;set interface fa1 x.x.x.x 255.255.255.0</p><p>rommon&gt;set ip route default x.x.x.x  </p><p>2.查看是否ping通tftp server</p><p>rommon&gt;set<br>rommon&gt;ping x.x.x.x</p><p>3.从tftp server引导</p><p>rommon&gt;boot t<a href="ftp://x.x.x.x/">ftp://x.x.x.x/</a></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="思科4500启动失败"><a href="#思科4500启动失败" class="headerlink" title="思科4500启动失败"></a>思科4500启动失败</h1><p>最近因为停电，usp故障有一台cisco4507启动失败，直接启动到了如下模式：<br>rommon&gt;</p><h1 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h1><p>看到是没有正确的看到加载镜像，所以想是不是镜像掉了，上官网搜了一些kb<br>rommon&gt;dev (查看启动项，我发现没有bootflash)</p><p>rommon&gt;dir flash0:<br>也看不到任何东西，我在想是不是设备挂了，所以抱着死马当活马医的态度对设备进行重新引导，修改寄存器值</p><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>检查设置\清除设置\修改寄存器值\重启</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">rommon&gt;</span><span class="language-bash"><span class="hljs-built_in">set</span></span> <br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">rommon&gt;</span><span class="language-bash"><span class="hljs-built_in">unset</span> boot</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">rommon&gt;</span><span class="language-bash">confreg 0x2102</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">rommon&gt;</span><span class="language-bash">reset</span><br></code></pre></td></tr></table></figure><p>如果不行可以尝试下面步骤，我是做了上述步骤就好了<br>配置TFTP</p><p>1.配置接口ip和默认路由</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">rommon&gt;</span><span class="language-bash"><span class="hljs-built_in">set</span> interface fa1 x.x.x.x 255.255.255.0</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">rommon&gt;</span><span class="language-bash"><span class="hljs-built_in">set</span> ip route default x.x.x.x</span>  <br></code></pre></td></tr></table></figure><p>2.查看是否ping通tftp server</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">rommon&gt;</span><span class="language-bash"><span class="hljs-built_in">set</span></span><br><span class="hljs-meta prompt_">rommon&gt;</span><span class="language-bash">ping x.x.x.x</span><br></code></pre></td></tr></table></figure><p>3.从tftp server引导</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">rommon&gt;</span><span class="language-bash">boot tftp://x.x.x.x/</span><br></code></pre></td></tr></table></figure>]]></content>
     
     
     <categories>
