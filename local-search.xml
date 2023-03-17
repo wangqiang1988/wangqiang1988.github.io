@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>wireguard-vpn with docker</title>
+    <link href="/2023/03/17/wireguard-vpn-with-docker/"/>
+    <url>/2023/03/17/wireguard-vpn-with-docker/</url>
+    
+    <content type="html"><![CDATA[<h1 id="wiregaurd-vpn服务端安装"><a href="#wiregaurd-vpn服务端安装" class="headerlink" title="wiregaurd-vpn服务端安装"></a>wiregaurd-vpn服务端安装</h1><p>使用docker-compose安装</p><h2 id="创建一个wireguard的目录"><a href="#创建一个wireguard的目录" class="headerlink" title="创建一个wireguard的目录"></a>创建一个wireguard的目录</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">sudo mkdir /opt/wireguard-server<br></code></pre></td></tr></table></figure><img src="/2023/03/17/wireguard-vpn-with-docker/mkdir.png" class=""><h2 id="docker-compose文件配置"><a href="#docker-compose文件配置" class="headerlink" title="docker-compose文件配置"></a>docker-compose文件配置</h2><p>网段,端口可以自行变更,peers是生产几个客户端配置文件</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python">version: <span class="hljs-string">&#x27;3.7&#x27;</span><br>services:<br>  wireguard:<br>    image: linuxserver/wireguard<br>    container_name: wireguard<br>    cap_add:<br>      - NET_ADMIN<br>      - SYS_MODULE<br>    environment:<br>      - PUID=<span class="hljs-number">1000</span><br>      - PGID=<span class="hljs-number">1000</span><br>      - TZ=Africa/Nairobi <span class="hljs-comment">#set correct timezone</span><br>      - SERVERPORT=<span class="hljs-number">51820</span> <span class="hljs-comment">#optional</span><br>      - PEERS=<span class="hljs-number">5</span> <span class="hljs-comment">#optional</span><br>      - PEERDNS=auto <span class="hljs-comment">#optional</span><br>      - ALLOWEDIPS=<span class="hljs-number">10.255</span><span class="hljs-number">.1</span><span class="hljs-number">.0</span>/<span class="hljs-number">24</span>,<span class="hljs-number">10.13</span><span class="hljs-number">.11</span><span class="hljs-number">.0</span> <span class="hljs-comment">#Peer addresses allowed</span><br>      - INTERNAL_SUBNET=<span class="hljs-number">10.13</span><span class="hljs-number">.11</span><span class="hljs-number">.0</span>/<span class="hljs-number">24</span> <span class="hljs-comment">#Subnet used in VPN tunnel</span><br>      - SERVERURL=xxxx.synology.me <span class="hljs-comment">#Wireguard VPN server address</span><br>    volumes:<br>      - /opt/wireguard-server/config:/config<br>      - /usr/src:/usr/src <span class="hljs-comment"># location of kernel headers</span><br>      - /lib/modules:/lib/modules<br>    ports:<br>      - <span class="hljs-number">51820</span>:<span class="hljs-number">51820</span>/udp<br>    sysctls:<br>      - net.ipv4.conf.<span class="hljs-built_in">all</span>.src_valid_mark=<span class="hljs-number">1</span><br>    restart: always<br></code></pre></td></tr></table></figure><h1 id="client端配置"><a href="#client端配置" class="headerlink" title="client端配置"></a>client端配置</h1><h2 id="安装wireguard"><a href="#安装wireguard" class="headerlink" title="安装wireguard"></a>安装wireguard</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">sudo apt-get install wireguard<br></code></pre></td></tr></table></figure><p> 然后将配置文件copy到&#x2F;etc&#x2F;wireguard目录下,例如peer1.conf,我这里已经更名为wg0.conf<br> <img src="/2023/03/17/wireguard-vpn-with-docker/conf.png" class=""></p><h2 id="启动wiregaurd"><a href="#启动wiregaurd" class="headerlink" title="启动wiregaurd"></a>启动wiregaurd</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">sudo wg-quick up wg0<br></code></pre></td></tr></table></figure> <img src="/2023/03/17/wireguard-vpn-with-docker/conf.png" class=""><p>就能看见wg0端口起来了，为了方便可以更名为wg0，看起来比较方便,关闭就是sudo wg-quick down wg0</p><h1 id="自动重连"><a href="#自动重连" class="headerlink" title="自动重连"></a>自动重连</h1><p>如果外网地址会变，或者因为某种原因会断开，需要自动重连可以使用python的一个模块wireguard-reconnect</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">sudo pip3 install wireguard-reconnect<br><span class="hljs-comment">#检测ip和检测间隔</span><br>sudo nohup wireguard-reconnect -i wg0 -g <span class="hljs-number">10.255</span><span class="hljs-number">.1</span><span class="hljs-number">.1</span> -p <span class="hljs-number">60</span> &amp;<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>网络</category>
+      
+      <category>vpn</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vpn</tag>
+      
+      <tag>wireguard</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>ipsec vpn ikev1排错-地址集</title>
     <link href="/2022/12/30/ipsec-vpn-ikev1%E6%8E%92%E9%94%99-%E5%9C%B0%E5%9D%80%E9%9B%86/"/>
     <url>/2022/12/30/ipsec-vpn-ikev1%E6%8E%92%E9%94%99-%E5%9C%B0%E5%9D%80%E9%9B%86/</url>

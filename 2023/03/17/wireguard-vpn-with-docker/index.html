@@ -16,28 +16,27 @@
   <meta name="author" content="WangQiang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="ipsec vpn因为地址集问题无法建立连接juniper srx与华为云建立ipsec ikev1基础版当时建完了是很稳定的，跑了大约几个月的时间，后来因为一次变更变得不稳定了。 坑点因为采用的是ikev1，但是不是所有的设备都支持ikev1地址集这个概念，后来变更因为加了一个网段，所以导致了不稳定，经过和华为云排查了1天的时间，定位到这个问题并解决，如果有此困扰可以试试把地址集分开，单独建策略">
+    <meta name="description" content="wiregaurd-vpn服务端安装使用docker-compose安装 创建一个wireguard的目录1sudo mkdir &#x2F;opt&#x2F;wireguard-server   docker-compose文件配置网段,端口可以自行变更,peers是生产几个客户端配置文件 123456789101112131415161718192021222324252627version: &amp;#x27;3.7">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ipsec vpn ikev1排错-地址集">
-<meta property="og:url" content="http://example.com/2022/12/30/ipsec-vpn-ikev1%E6%8E%92%E9%94%99-%E5%9C%B0%E5%9D%80%E9%9B%86/index.html">
+<meta property="og:title" content="wireguard-vpn with docker">
+<meta property="og:url" content="http://example.com/2023/03/17/wireguard-vpn-with-docker/index.html">
 <meta property="og:site_name" content="WangQiang Blog">
-<meta property="og:description" content="ipsec vpn因为地址集问题无法建立连接juniper srx与华为云建立ipsec ikev1基础版当时建完了是很稳定的，跑了大约几个月的时间，后来因为一次变更变得不稳定了。 坑点因为采用的是ikev1，但是不是所有的设备都支持ikev1地址集这个概念，后来变更因为加了一个网段，所以导致了不稳定，经过和华为云排查了1天的时间，定位到这个问题并解决，如果有此困扰可以试试把地址集分开，单独建策略">
+<meta property="og:description" content="wiregaurd-vpn服务端安装使用docker-compose安装 创建一个wireguard的目录1sudo mkdir &#x2F;opt&#x2F;wireguard-server   docker-compose文件配置网段,端口可以自行变更,peers是生产几个客户端配置文件 123456789101112131415161718192021222324252627version: &amp;#x27;3.7">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/img/ipsec.png">
-<meta property="article:published_time" content="2022-12-30T09:27:09.000Z">
-<meta property="article:modified_time" content="2022-12-30T09:37:25.558Z">
+<meta property="og:image" content="http://example.com/img/wireguard.jpg">
+<meta property="article:published_time" content="2023-03-17T02:40:53.000Z">
+<meta property="article:modified_time" content="2023-03-17T03:03:30.559Z">
 <meta property="article:author" content="WangQiang">
-<meta property="article:tag" content="交换机">
-<meta property="article:tag" content="ipsecvpn">
-<meta property="article:tag" content="juniper">
+<meta property="article:tag" content="vpn">
+<meta property="article:tag" content="wireguard">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/ipsec.png">
+<meta name="twitter:image" content="http://example.com/img/wireguard.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>ipsec vpn ikev1排错-地址集 - WangQiang Blog</title>
+  <title>wireguard-vpn with docker - WangQiang Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -219,7 +218,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="ipsec vpn ikev1排错-地址集"></span>
+            <span id="subtitle" data-typed-text="wireguard-vpn with docker"></span>
           
         </div>
 
@@ -230,8 +229,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-12-30 17:27" pubdate>
-          2022年12月30日 下午
+        <time datetime="2023-03-17 10:40" pubdate>
+          2023年3月17日 上午
         </time>
       </span>
     
@@ -242,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          253 字
+          1.2k 字
         
       </span>
     
@@ -253,7 +252,7 @@
         
         
         
-          3 分钟
+          10 分钟
         
       </span>
     
@@ -299,21 +298,24 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">ipsec vpn ikev1排错-地址集</h1>
+            <h1 style="display: none">wireguard-vpn with docker</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="ipsec-vpn因为地址集问题无法建立连接"><a href="#ipsec-vpn因为地址集问题无法建立连接" class="headerlink" title="ipsec vpn因为地址集问题无法建立连接"></a>ipsec vpn因为地址集问题无法建立连接</h1><h3 id="juniper-srx与华为云建立ipsec-ikev1基础版"><a href="#juniper-srx与华为云建立ipsec-ikev1基础版" class="headerlink" title="juniper srx与华为云建立ipsec ikev1基础版"></a>juniper srx与华为云建立ipsec ikev1基础版</h3><p>当时建完了是很稳定的，跑了大约几个月的时间，后来因为一次变更变得不稳定了。</p>
-<h3 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h3><p>因为采用的是ikev1，但是不是所有的设备都支持ikev1地址集这个概念，后来变更因为加了一个网段，所以导致了不稳定，经过和华为云排查了1天的时间，定位到这个问题并解决，如果有此困扰可以试试把地址集分开，单独建策略。<br>第一张图是正确的策略方式</p>
-<p>这是正确的</p>
-<img src="/2022/12/30/ipsec-vpn-ikev1%E6%8E%92%E9%94%99-%E5%9C%B0%E5%9D%80%E9%9B%86/zhengque.png" srcset="/img/loading.gif" lazyload class="">
+                <h1 id="wiregaurd-vpn服务端安装"><a href="#wiregaurd-vpn服务端安装" class="headerlink" title="wiregaurd-vpn服务端安装"></a>wiregaurd-vpn服务端安装</h1><p>使用docker-compose安装</p>
+<h2 id="创建一个wireguard的目录"><a href="#创建一个wireguard的目录" class="headerlink" title="创建一个wireguard的目录"></a>创建一个wireguard的目录</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">sudo mkdir /opt/wireguard-server<br></code></pre></td></tr></table></figure>
+<img src="/2023/03/17/wireguard-vpn-with-docker/mkdir.png" srcset="/img/loading.gif" lazyload class="">
 
-<p>不正确的</p>
-<img src="/2022/12/30/ipsec-vpn-ikev1%E6%8E%92%E9%94%99-%E5%9C%B0%E5%9D%80%E9%9B%86/buzhengque.png" srcset="/img/loading.gif" lazyload class="">
-
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>应该不是所以的设备都不支持地址集，只是赶上了，给大家一个排错思路。</p>
-
+<h2 id="docker-compose文件配置"><a href="#docker-compose文件配置" class="headerlink" title="docker-compose文件配置"></a>docker-compose文件配置</h2><p>网段,端口可以自行变更,peers是生产几个客户端配置文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python">version: <span class="hljs-string">&#x27;3.7&#x27;</span><br>services:<br>  wireguard:<br>    image: linuxserver/wireguard<br>    container_name: wireguard<br>    cap_add:<br>      - NET_ADMIN<br>      - SYS_MODULE<br>    environment:<br>      - PUID=<span class="hljs-number">1000</span><br>      - PGID=<span class="hljs-number">1000</span><br>      - TZ=Africa/Nairobi <span class="hljs-comment">#set correct timezone</span><br>      - SERVERPORT=<span class="hljs-number">51820</span> <span class="hljs-comment">#optional</span><br>      - PEERS=<span class="hljs-number">5</span> <span class="hljs-comment">#optional</span><br>      - PEERDNS=auto <span class="hljs-comment">#optional</span><br>      - ALLOWEDIPS=<span class="hljs-number">10.255</span><span class="hljs-number">.1</span><span class="hljs-number">.0</span>/<span class="hljs-number">24</span>,<span class="hljs-number">10.13</span><span class="hljs-number">.11</span><span class="hljs-number">.0</span> <span class="hljs-comment">#Peer addresses allowed</span><br>      - INTERNAL_SUBNET=<span class="hljs-number">10.13</span><span class="hljs-number">.11</span><span class="hljs-number">.0</span>/<span class="hljs-number">24</span> <span class="hljs-comment">#Subnet used in VPN tunnel</span><br>      - SERVERURL=xxxx.synology.me <span class="hljs-comment">#Wireguard VPN server address</span><br>    volumes:<br>      - /opt/wireguard-server/config:/config<br>      - /usr/src:/usr/src <span class="hljs-comment"># location of kernel headers</span><br>      - /lib/modules:/lib/modules<br>    ports:<br>      - <span class="hljs-number">51820</span>:<span class="hljs-number">51820</span>/udp<br>    sysctls:<br>      - net.ipv4.conf.<span class="hljs-built_in">all</span>.src_valid_mark=<span class="hljs-number">1</span><br>    restart: always<br></code></pre></td></tr></table></figure>
+<h1 id="client端配置"><a href="#client端配置" class="headerlink" title="client端配置"></a>client端配置</h1><h2 id="安装wireguard"><a href="#安装wireguard" class="headerlink" title="安装wireguard"></a>安装wireguard</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">sudo apt-get install wireguard<br></code></pre></td></tr></table></figure>
+<p> 然后将配置文件copy到&#x2F;etc&#x2F;wireguard目录下,例如peer1.conf,我这里已经更名为wg0.conf<br> <img src="/2023/03/17/wireguard-vpn-with-docker/conf.png" srcset="/img/loading.gif" lazyload class=""></p>
+<h2 id="启动wiregaurd"><a href="#启动wiregaurd" class="headerlink" title="启动wiregaurd"></a>启动wiregaurd</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">sudo wg-quick up wg0<br></code></pre></td></tr></table></figure>
+ <img src="/2023/03/17/wireguard-vpn-with-docker/conf.png" srcset="/img/loading.gif" lazyload class="">
+<p>就能看见wg0端口起来了，为了方便可以更名为wg0，看起来比较方便,关闭就是sudo wg-quick down wg0</p>
+<h1 id="自动重连"><a href="#自动重连" class="headerlink" title="自动重连"></a>自动重连</h1><p>如果外网地址会变，或者因为某种原因会断开，需要自动重连可以使用python的一个模块wireguard-reconnect</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">sudo pip3 install wireguard-reconnect<br><span class="hljs-comment">#检测ip和检测间隔</span><br>sudo nohup wireguard-reconnect -i wg0 -g <span class="hljs-number">10.255</span><span class="hljs-number">.1</span><span class="hljs-number">.1</span> -p <span class="hljs-number">60</span> &amp;<br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -334,6 +336,13 @@
   <a href="/categories/%E7%BD%91%E7%BB%9C/" class="category-chain-item">网络</a>
   
   
+    <span>></span>
+    
+  <a href="/categories/%E7%BD%91%E7%BB%9C/vpn/" class="category-chain-item">vpn</a>
+  
+  
+
+  
 
       </span>
     
@@ -346,11 +355,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E4%BA%A4%E6%8D%A2%E6%9C%BA/">#交换机</a>
+        <a href="/tags/vpn/">#vpn</a>
       
-        <a href="/tags/ipsecvpn/">#ipsecvpn</a>
-      
-        <a href="/tags/juniper/">#juniper</a>
+        <a href="/tags/wireguard/">#wireguard</a>
       
     </div>
   
@@ -362,8 +369,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>ipsec vpn ikev1排错-地址集</div>
-      <div>http://example.com/2022/12/30/ipsec-vpn-ikev1排错-地址集/</div>
+      <div>wireguard-vpn with docker</div>
+      <div>http://example.com/2023/03/17/wireguard-vpn-with-docker/</div>
     </div>
     <div class="license-meta">
       
@@ -375,7 +382,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年12月30日</div>
+          <div>2023年3月17日</div>
         </div>
       
       
@@ -405,18 +412,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/17/wireguard-vpn-with-docker/" title="wireguard-vpn with docker">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">wireguard-vpn with docker</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/11/29/telnetlib%E5%A4%87%E4%BB%BD%E6%80%9D%E7%A7%91%E4%BA%A4%E6%8D%A2%E6%9C%BA10054/" title="telnetlib备份思科交换机10054">
-                        <span class="hidden-mobile">telnetlib备份思科交换机10054</span>
+                      <a href="/2022/12/30/ipsec-vpn-ikev1%E6%8E%92%E9%94%99-%E5%9C%B0%E5%9D%80%E9%9B%86/" title="ipsec vpn ikev1排错-地址集">
+                        <span class="hidden-mobile">ipsec vpn ikev1排错-地址集</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
