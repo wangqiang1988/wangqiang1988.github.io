@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>ubuntu squid端口不监听ipv4</title>
+    <link href="/2023/03/17/ubuntu-squid%E7%AB%AF%E5%8F%A3%E4%B8%8D%E7%9B%91%E5%90%ACipv4/"/>
+    <url>/2023/03/17/ubuntu-squid%E7%AB%AF%E5%8F%A3%E4%B8%8D%E7%9B%91%E5%90%ACipv4/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Squid端口不监听ipv4"><a href="#Squid端口不监听ipv4" class="headerlink" title="Squid端口不监听ipv4"></a>Squid端口不监听ipv4</h1><p>昨天装了squid代理，安装完成后没法用，发现端口不通，netstat后发现只监听了ipv6的端口，没有监听ipv4的地址，网上找了一下资料，看到一篇改一下配置文件到0.0.0.0:3128</p><img src="/2023/03/17/ubuntu-squid%E7%AB%AF%E5%8F%A3%E4%B8%8D%E7%9B%91%E5%90%ACipv4/conf.png" class=""><p>再查看netstat后，ipv4也监听了，端口也通了</p><img src="/2023/03/17/ubuntu-squid%E7%AB%AF%E5%8F%A3%E4%B8%8D%E7%9B%91%E5%90%ACipv4/netstat.png" class="">]]></content>
+    
+    
+    <categories>
+      
+      <category>网络</category>
+      
+      <category>系统</category>
+      
+      <category>linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ubuntu</tag>
+      
+      <tag>squid</tag>
+      
+      <tag>linux</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>wireguard-vpn with docker</title>
     <link href="/2023/03/17/wireguard-vpn-with-docker/"/>
     <url>/2023/03/17/wireguard-vpn-with-docker/</url>
