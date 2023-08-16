@@ -16,16 +16,16 @@
   <meta name="author" content="WangQiang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="h3c v5对接windows nps做802.1x接入认证使用ssh登录问题描述之前使用telnet登录，一切正常，修改成ssh后无法登录 排查方法h3c v5配置跟其他radius client设备有一点不一样的是授权，如下：  后来因为需要改ssh登录，就想着把login-service改成ssh，但是默认是没有的，需要先修改一下nps的xml文件  修改完成后重启电脑即可  也就是说，ra">
+    <meta name="description" content="h3c v5对接windows nps做802.1x接入认证使用ssh登录-记录于20230816问题描述之前使用telnet登录，一切正常，修改成ssh后无法登录 排查方法h3c v5配置跟其他radius client设备有一点不一样的是授权,这个是使用telnet时已经配置好的，当时也费了半天查找，如下：  后来因为需要改ssh登录，就想着把login-service改成ssh，但是默认是没">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络工程师排错笔记-长更">
 <meta property="og:url" content="http://example.com/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/index.html">
 <meta property="og:site_name" content="WangQiang Blog">
-<meta property="og:description" content="h3c v5对接windows nps做802.1x接入认证使用ssh登录问题描述之前使用telnet登录，一切正常，修改成ssh后无法登录 排查方法h3c v5配置跟其他radius client设备有一点不一样的是授权，如下：  后来因为需要改ssh登录，就想着把login-service改成ssh，但是默认是没有的，需要先修改一下nps的xml文件  修改完成后重启电脑即可  也就是说，ra">
+<meta property="og:description" content="h3c v5对接windows nps做802.1x接入认证使用ssh登录-记录于20230816问题描述之前使用telnet登录，一切正常，修改成ssh后无法登录 排查方法h3c v5配置跟其他radius client设备有一点不一样的是授权,这个是使用telnet时已经配置好的，当时也费了半天查找，如下：  后来因为需要改ssh登录，就想着把login-service改成ssh，但是默认是没">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/Network-diagram.png">
 <meta property="article:published_time" content="2053-12-31T09:36:28.000Z">
-<meta property="article:modified_time" content="2023-08-16T11:21:08.951Z">
+<meta property="article:modified_time" content="2023-08-16T11:26:30.447Z">
 <meta property="article:author" content="WangQiang">
 <meta property="article:tag" content="网络">
 <meta name="twitter:card" content="summary_large_image">
@@ -302,13 +302,13 @@
             
               <div class="markdown-body">
                 
-                <h1 id="h3c-v5对接windows-nps做802-1x接入认证使用ssh登录"><a href="#h3c-v5对接windows-nps做802-1x接入认证使用ssh登录" class="headerlink" title="h3c v5对接windows nps做802.1x接入认证使用ssh登录"></a>h3c v5对接windows nps做802.1x接入认证使用ssh登录</h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>之前使用telnet登录，一切正常，修改成ssh后无法登录</p>
-<h2 id="排查方法"><a href="#排查方法" class="headerlink" title="排查方法"></a>排查方法</h2><p>h3c v5配置跟其他radius client设备有一点不一样的是授权，如下：</p>
+                <h1 id="h3c-v5对接windows-nps做802-1x接入认证使用ssh登录-记录于20230816"><a href="#h3c-v5对接windows-nps做802-1x接入认证使用ssh登录-记录于20230816" class="headerlink" title="h3c v5对接windows nps做802.1x接入认证使用ssh登录-记录于20230816"></a>h3c v5对接windows nps做802.1x接入认证使用ssh登录-记录于20230816</h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>之前使用telnet登录，一切正常，修改成ssh后无法登录</p>
+<h2 id="排查方法"><a href="#排查方法" class="headerlink" title="排查方法"></a>排查方法</h2><p>h3c v5配置跟其他radius client设备有一点不一样的是授权,这个是使用telnet时已经配置好的，当时也费了半天查找，如下：</p>
 <img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/h3c_v5_radius1.png" srcset="/img/loading.gif" lazyload class="">
 <p>后来因为需要改ssh登录，就想着把login-service改成ssh，但是默认是没有的，需要先修改一下nps的xml文件</p>
-
-<p>修改完成后重启电脑即可</p>
-
+<img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/h3c_v5_radius3.png" srcset="/img/loading.gif" lazyload class="">
+<p>修改完成后重启电脑即可，之前telnet时选择的是telnet，ssh修改完xml后重启才能用</p>
+<img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/h3c_v5_radius2.png" srcset="/img/loading.gif" lazyload class="">
 <p>也就是说，radius rfc 2865里面标准的值是没有ssh的，需要自己手动修改，如果以后有其他设备限制登陆也应该可以用这种办法</p>
 <h1 id="h3c-policy-based-route-记录于20230815"><a href="#h3c-policy-based-route-记录于20230815" class="headerlink" title="h3c policy-based-route-记录于20230815"></a>h3c policy-based-route-记录于20230815</h1><h2 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h2><p>使用H3c交换机在interface vlan接口做了一个policy-based-route，在一个acl里面的前面写了deny souce和destination，然后在policy-based-route调用后发现不管用</p>
 <h2 id="排查方法-1"><a href="#排查方法-1" class="headerlink" title="排查方法"></a>排查方法</h2><p>因为policy-based-route能写node num，那么在前面写一个没有apply的行为是否可以呢，答案是可以<br>policy-based-route如下：</p>
