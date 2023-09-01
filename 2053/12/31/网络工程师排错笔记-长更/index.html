@@ -16,16 +16,16 @@
   <meta name="author" content="WangQiang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="windows radius服务器拿计费日志到es-记录于20230825需求需要获取统一认证服务器的计费信息，对应用户名ip关系 分析windows nps服务器可以作为计费服务器使用，将计费日志使用filebeats收集到es，再从es用python拿出来即可做到实时搜索通过radius认证的用户名&amp;ip 实现效果  h3c v5对接windows nps做802.1x接入认证使用ss">
+    <meta name="description" content="linux使用iptables做dnat-记录于20230901需求需要把每个vlan配置一个ip，只要用户访问到这个ip就转发到另一个ip拓扑：client1—-linux-ip1—-serverclient2—-linux-ip2—-serverclient3—-linux-ip3—-server 分析首先确定使用iptables来实现功能，那么需要服务器配置多个ip，那么有两种方式，一个是多">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络工程师排错笔记-长更">
 <meta property="og:url" content="http://example.com/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/index.html">
 <meta property="og:site_name" content="WangQiang Blog">
-<meta property="og:description" content="windows radius服务器拿计费日志到es-记录于20230825需求需要获取统一认证服务器的计费信息，对应用户名ip关系 分析windows nps服务器可以作为计费服务器使用，将计费日志使用filebeats收集到es，再从es用python拿出来即可做到实时搜索通过radius认证的用户名&amp;ip 实现效果  h3c v5对接windows nps做802.1x接入认证使用ss">
+<meta property="og:description" content="linux使用iptables做dnat-记录于20230901需求需要把每个vlan配置一个ip，只要用户访问到这个ip就转发到另一个ip拓扑：client1—-linux-ip1—-serverclient2—-linux-ip2—-serverclient3—-linux-ip3—-server 分析首先确定使用iptables来实现功能，那么需要服务器配置多个ip，那么有两种方式，一个是多">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/Network-diagram.png">
 <meta property="article:published_time" content="2053-12-31T09:36:28.000Z">
-<meta property="article:modified_time" content="2023-08-25T02:31:13.154Z">
+<meta property="article:modified_time" content="2023-09-01T01:47:03.209Z">
 <meta property="article:author" content="WangQiang">
 <meta property="article:tag" content="网络">
 <meta name="twitter:card" content="summary_large_image">
@@ -240,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          3.5k 字
         
       </span>
     
@@ -251,7 +251,7 @@
         
         
         
-          14 分钟
+          30 分钟
         
       </span>
     
@@ -302,8 +302,22 @@
             
               <div class="markdown-body">
                 
-                <h1 id="windows-radius服务器拿计费日志到es-记录于20230825"><a href="#windows-radius服务器拿计费日志到es-记录于20230825" class="headerlink" title="windows radius服务器拿计费日志到es-记录于20230825"></a>windows radius服务器拿计费日志到es-记录于20230825</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>需要获取统一认证服务器的计费信息，对应用户名ip关系</p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>windows nps服务器可以作为计费服务器使用，将计费日志使用filebeats收集到es，再从es用python拿出来即可做到实时搜索通过radius认证的用户名&amp;ip</p>
+                <h1 id="linux使用iptables做dnat-记录于20230901"><a href="#linux使用iptables做dnat-记录于20230901" class="headerlink" title="linux使用iptables做dnat-记录于20230901"></a>linux使用iptables做dnat-记录于20230901</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>需要把每个vlan配置一个ip，只要用户访问到这个ip就转发到另一个ip<br>拓扑：<br>client1—-linux-ip1—-server<br>client2—-linux-ip2—-server<br>client3—-linux-ip3—-server</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>首先确定使用iptables来实现功能，那么需要服务器配置多个ip，那么有两种方式，一个是多网卡，另一个是vlan，多网卡的话如果网段过多无法实现，所以使用vlan的方式实现</p>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><h2 id="配置8021q"><a href="#配置8021q" class="headerlink" title="配置8021q"></a>配置8021q</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt-get update<br>sudo apt-get install vlan<br>sudo modprobe 8021q<br></code></pre></td></tr></table></figure>
+
+<h2 id="配置端口ip"><a href="#配置端口ip" class="headerlink" title="配置端口ip"></a>配置端口ip</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">auto eth0.4 #vlan4<br>auto eth0.200 #vlan200<br>auto eth0.2 #vlan2<br>iface eth0.4 inet static #配置vlan4 ip<br>    address 192.168.212.176<br>    netmask 255.255.255.0<br>    gateway 192.168.212.1<br>iface eth0.4 inet static #配置vlan4 子ip<br>    address 192.168.212.12<br>    netmask 255.255.255.0<br>iface eth0.200 inet static #配置vlan200 ip<br>    address 10.2.0.9<br>    netmask 255.255.240.0<br>iface eth0.2 inet static #配置vlan2 ip<br>    address 192.168.20.12<br>    netmask 255.255.255.0<br></code></pre></td></tr></table></figure>
+<p>vlan4作为主管理ip，所以使用子ip作为dnat的地址，不然会无法访问服务器</p>
+<h2 id="配置ipv4转发及iptables并记录日志"><a href="#配置ipv4转发及iptables并记录日志" class="headerlink" title="配置ipv4转发及iptables并记录日志"></a>配置ipv4转发及iptables并记录日志</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">记录iptables日志</span><br>sudo vim /etc/rsyslog.conf<br><span class="hljs-meta prompt_">#</span><span class="language-bash">添加下面iptables.log</span><br>:msg, contains, &quot;iptables:&quot; -/var/log/iptables.log<br>&amp; ~<br>sudo vim /etc/sysctl.conf<br><span class="hljs-meta prompt_">#</span><span class="language-bash">修改下面转发值为1</span><br>net.ipv4.ip_forward=1<br><span class="hljs-meta prompt_">#</span><span class="language-bash">添加iptables，并将日志记录到iptables.log，持久化iptables可以写道rc.local</span><br>sudo iptables -t nat -A POSTROUTING -o eth0.4 -j LOG --log-prefix &quot;iptables: &quot; --log-level 7<br>sudo iptables -t nat -A POSTROUTING -o eth0.4 -j MASQUERADE<br><br>sudo iptables -t nat -A POSTROUTING -o eth0.4 -j LOG --log-prefix &quot;iptables: &quot; --log-level 7<br>sudo iptables -t nat -A POSTROUTING -o eth0.4 -j MASQUERADE<br><br>sudo iptables -t nat -A PREROUTING -d 192.168.212.12 -j LOG --log-prefix &quot;iptables: &quot; --log-level 7<br>sudo iptables -t nat -A PREROUTING -d 192.168.212.12 -j DNAT --to-destination 192.168.5.12<br><br>sudo iptables -t nat -A PREROUTING -d 192.168.20.12 -j LOG --log-prefix &quot;iptables: &quot; --log-level 7<br>sudo iptables -t nat -A PREROUTING -d 192.168.20.12 -j DNAT --to-destination 192.168.5.12<br><br>sudo iptables -t nat -A PREROUTING -d 10.2.0.9 -j LOG --log-prefix &quot;iptables: &quot; --log-level 7<br>sudo iptables -t nat -A PREROUTING -d 10.2.0.9 -j DNAT --to-destination 192.168.5.12<br></code></pre></td></tr></table></figure>
+
+<p>看到如下说明基本ok了</p>
+
+
+<h1 id="效果实现"><a href="#效果实现" class="headerlink" title="效果实现"></a>效果实现</h1><p>可以看到访问其中一个ip的地址已经被转到了目标server</p>
+
+<p>client1—-linux-ip1—-server<br>192.168.5.98—-192.168.212.12—-192.168.5.12</p>
+<h1 id="windows-radius服务器拿计费日志到es-记录于20230825"><a href="#windows-radius服务器拿计费日志到es-记录于20230825" class="headerlink" title="windows radius服务器拿计费日志到es-记录于20230825"></a>windows radius服务器拿计费日志到es-记录于20230825</h1><h2 id="需求-1"><a href="#需求-1" class="headerlink" title="需求"></a>需求</h2><p>需要获取统一认证服务器的计费信息，对应用户名ip关系</p>
+<h2 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h2><p>windows nps服务器可以作为计费服务器使用，将计费日志使用filebeats收集到es，再从es用python拿出来即可做到实时搜索通过radius认证的用户名&amp;ip</p>
 <h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/userip.png" srcset="/img/loading.gif" lazyload class="">
 
 <h1 id="h3c-v5对接windows-nps做802-1x接入认证使用ssh登录-记录于20230816"><a href="#h3c-v5对接windows-nps做802-1x接入认证使用ssh登录-记录于20230816" class="headerlink" title="h3c v5对接windows nps做802.1x接入认证使用ssh登录-记录于20230816"></a>h3c v5对接windows nps做802.1x接入认证使用ssh登录-记录于20230816</h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>之前使用telnet登录，一切正常，修改成ssh后无法登录</p>
