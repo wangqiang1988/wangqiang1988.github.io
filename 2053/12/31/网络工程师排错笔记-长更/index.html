@@ -16,16 +16,16 @@
   <meta name="author" content="WangQiang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="juniper srx防火墙ip-monitor切换失败问题公网故障，ip-monitor没有进行切换 分析过程查看service rpm发现有失败检测，但是路由表没有变化，看了一下ip-monitor没有运行，原因是systeme-health-management进程挂了  rpm-status  ip-monitor status 处理方式重启system-health-management">
+    <meta name="description" content="zabbix agent对远端ping的监控问题有一条专线故障，但是没有报警，因为zabbix server没有代理在当地，只有一个zabbix-agent 配置需要用zabbix-agent进行ping，然后将结果返回给zabbix-server进行报警 1.在zabbix-agent配置一个userparameter   UserParameter&#x3D;avaya.ping[*],&amp;#x">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络工程师排错笔记-长更">
 <meta property="og:url" content="http://example.com/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/index.html">
 <meta property="og:site_name" content="WangQiang Blog">
-<meta property="og:description" content="juniper srx防火墙ip-monitor切换失败问题公网故障，ip-monitor没有进行切换 分析过程查看service rpm发现有失败检测，但是路由表没有变化，看了一下ip-monitor没有运行，原因是systeme-health-management进程挂了  rpm-status  ip-monitor status 处理方式重启system-health-management">
+<meta property="og:description" content="zabbix agent对远端ping的监控问题有一条专线故障，但是没有报警，因为zabbix server没有代理在当地，只有一个zabbix-agent 配置需要用zabbix-agent进行ping，然后将结果返回给zabbix-server进行报警 1.在zabbix-agent配置一个userparameter   UserParameter&#x3D;avaya.ping[*],&amp;#x">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/Network-diagram.png">
 <meta property="article:published_time" content="2053-12-31T09:36:28.000Z">
-<meta property="article:modified_time" content="2023-10-26T02:00:13.402Z">
+<meta property="article:modified_time" content="2023-11-27T07:50:39.015Z">
 <meta property="article:author" content="WangQiang">
 <meta property="article:tag" content="网络">
 <meta name="twitter:card" content="summary_large_image">
@@ -240,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.8k 字
+          4.1k 字
         
       </span>
     
@@ -251,7 +251,7 @@
         
         
         
-          32 分钟
+          35 分钟
         
       </span>
     
@@ -302,7 +302,23 @@
             
               <div class="markdown-body">
                 
-                <h1 id="juniper-srx防火墙ip-monitor切换失败"><a href="#juniper-srx防火墙ip-monitor切换失败" class="headerlink" title="juniper srx防火墙ip-monitor切换失败"></a>juniper srx防火墙ip-monitor切换失败</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>公网故障，ip-monitor没有进行切换</p>
+                <h1 id="zabbix-agent对远端ping的监控"><a href="#zabbix-agent对远端ping的监控" class="headerlink" title="zabbix agent对远端ping的监控"></a>zabbix agent对远端ping的监控</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>有一条专线故障，但是没有报警，因为zabbix server没有代理在当地，只有一个zabbix-agent</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>需要用zabbix-agent进行ping，然后将结果返回给zabbix-server进行报警</p>
+<p>1.在zabbix-agent配置一个userparameter</p>
+<img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/avaya1.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>UserParameter&#x3D;avaya.ping[*],&#x2F;usr&#x2F;bin&#x2F;ping -c 1 -w 1 $1 &gt; &#x2F;dev&#x2F;null 2&gt;&amp;1 ; echo $?</p>
+<p>2.在zabbix系统配置监控项</p>
+<img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/avaya2.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>3.创建触发器</p>
+<img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/avaya3.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>4.结果</p>
+<img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/avaya4.png" srcset="/img/loading.gif" lazyload class="">
+
+
+<h1 id="juniper-srx防火墙ip-monitor切换失败"><a href="#juniper-srx防火墙ip-monitor切换失败" class="headerlink" title="juniper srx防火墙ip-monitor切换失败"></a>juniper srx防火墙ip-monitor切换失败</h1><h2 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h2><p>公网故障，ip-monitor没有进行切换</p>
 <h2 id="分析过程"><a href="#分析过程" class="headerlink" title="分析过程"></a>分析过程</h2><p>查看service rpm发现有失败检测，但是路由表没有变化，看了一下ip-monitor没有运行，原因是systeme-health-management进程挂了</p>
 <img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/rpm.png" srcset="/img/loading.gif" lazyload class="">
 <p>rpm-status</p>
@@ -311,12 +327,12 @@
 <h2 id="处理方式"><a href="#处理方式" class="headerlink" title="处理方式"></a>处理方式</h2><p>重启system-health-management进程</p>
 <h2 id="防范"><a href="#防范" class="headerlink" title="防范"></a>防范</h2><p>1.syslog发送到es并报警zabbix<br>2.创建crontab用脚本巡检syshmd进程是否存在</p>
 <h1 id="zabbix-api-problem-get过滤已知问题和禁用主机问题"><a href="#zabbix-api-problem-get过滤已知问题和禁用主机问题" class="headerlink" title="zabbix api problem.get过滤已知问题和禁用主机问题"></a>zabbix api problem.get过滤已知问题和禁用主机问题</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>需要通过api抓出来正在发生的问题过滤掉已知问题</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>需要在filter下面进行配置，如下图</p>
+<h2 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h2><p>需要在filter下面进行配置，如下图</p>
 <img src="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/zabbix_filter.png" srcset="/img/loading.gif" lazyload class="">
 
 <h1 id="linux使用iptables做dnat-记录于20230901"><a href="#linux使用iptables做dnat-记录于20230901" class="headerlink" title="linux使用iptables做dnat-记录于20230901"></a>linux使用iptables做dnat-记录于20230901</h1><h2 id="需求-1"><a href="#需求-1" class="headerlink" title="需求"></a>需求</h2><p>需要把每个vlan配置一个ip，只要用户访问到这个ip就转发到另一个ip<br>拓扑：<br>client1—-linux-ip1—-server<br>client2—-linux-ip2—-server<br>client3—-linux-ip3—-server</p>
 <h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>首先确定使用iptables来实现功能，那么需要服务器配置多个ip，那么有两种方式，一个是多网卡，另一个是vlan，多网卡的话如果网段过多无法实现，所以使用vlan的方式实现</p>
-<h1 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h1><h2 id="配置8021q"><a href="#配置8021q" class="headerlink" title="配置8021q"></a>配置8021q</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt-get update<br>sudo apt-get install vlan<br>sudo modprobe 8021q<br></code></pre></td></tr></table></figure>
+<h1 id="配置-2"><a href="#配置-2" class="headerlink" title="配置"></a>配置</h1><h2 id="配置8021q"><a href="#配置8021q" class="headerlink" title="配置8021q"></a>配置8021q</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt-get update<br>sudo apt-get install vlan<br>sudo modprobe 8021q<br></code></pre></td></tr></table></figure>
 
 <h2 id="配置端口ip"><a href="#配置端口ip" class="headerlink" title="配置端口ip"></a>配置端口ip</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">auto eth0.4 #vlan4<br>auto eth0.200 #vlan200<br>auto eth0.2 #vlan2<br>iface eth0.4 inet static #配置vlan4 ip<br>    address 192.168.212.176<br>    netmask 255.255.255.0<br>    gateway 192.168.212.1<br>iface eth0.4 inet static #配置vlan4 子ip<br>    address 192.168.212.12<br>    netmask 255.255.255.0<br>iface eth0.200 inet static #配置vlan200 ip<br>    address 10.2.0.9<br>    netmask 255.255.240.0<br>iface eth0.2 inet static #配置vlan2 ip<br>    address 192.168.20.12<br>    netmask 255.255.255.0<br></code></pre></td></tr></table></figure>
 <p>vlan4作为主管理ip，所以使用子ip作为dnat的地址，不然会无法访问服务器</p>
