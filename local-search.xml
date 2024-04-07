@@ -29,6 +29,33 @@
   
   
   <entry>
+    <title>b站直播间AI自动回复弹幕</title>
+    <link href="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/"/>
+    <url>/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h1><p>起初弄了个24小时音乐直播间，里面都是一些从网上down的音乐，供大家听听，背景图是bing的壁纸，后来陆续有网友（虽然很少）开始打卡，我就想看看大家的反馈，所以就把弹幕通过blivedm推送到了微信企业号的应用中，能实时查看。后来我想要回复，并且通过ai回复，就得借助不正当手段进行回复（构造b站send的data数据），后来在b站开发者群里问，没有相对应的api，但是有群友提供了新思路，为什么一定要答复呢，让回复能显示就行了啊，接下来就有了这个流程。</p><h1 id="接收弹幕"><a href="#接收弹幕" class="headerlink" title="接收弹幕"></a>接收弹幕</h1><p>使用blivechat进行弹幕接收，并且通过程序的前端使用obs推到直播中，这样，网友的弹幕就能显示在屏幕中了。使用blivechat docker部署，很容易就能轻而易举地获取到弹幕。</p><img src="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/receive1.png" class=""><p>注意开启服务器转发，不然后续没法处理后续的弹幕消息。</p><img src="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/receive2.png" class=""><h1 id="处理弹幕，显示弹幕"><a href="#处理弹幕，显示弹幕" class="headerlink" title="处理弹幕，显示弹幕"></a>处理弹幕，显示弹幕</h1><p>处理弹幕使用的google的gemini，通过api把blivechat接收到的弹幕通过gemini进行回复。找到blivechat&#x2F;services&#x2F;chat.py中红色位置（我使用的是身份码，如果使用房间id的话是上面跟这个差不多的结构），然后绿色部分是gemini的处理流程和弹幕展示</p><img src="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/gemini1.png" class=""><h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>这样就有了这个能通过ai回复弹幕的直播间。</p><img src="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/result.png" class="">]]></content>
+    
+    
+    <categories>
+      
+      <category>python</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>直播</tag>
+      
+      <tag>python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>真原医-杨定一</title>
     <link href="/2024/03/20/%E7%9C%9F%E5%8E%9F%E5%8C%BB-%E6%9D%A8%E5%AE%9A%E4%B8%80/"/>
     <url>/2024/03/20/%E7%9C%9F%E5%8E%9F%E5%8C%BB-%E6%9D%A8%E5%AE%9A%E4%B8%80/</url>
@@ -217,9 +244,9 @@
     
     <tags>
       
-      <tag>跑步</tag>
-      
       <tag>生活</tag>
+      
+      <tag>跑步</tag>
       
     </tags>
     
@@ -271,9 +298,9 @@
     
     <tags>
       
-      <tag>跑步</tag>
-      
       <tag>生活</tag>
+      
+      <tag>跑步</tag>
       
     </tags>
     
