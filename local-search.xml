@@ -29,6 +29,39 @@
   
   
   <entry>
+    <title>一次粗糙的上线应用程序 cli_creator</title>
+    <link href="/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/"/>
+    <url>/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/</url>
+    
+    <content type="html"><![CDATA[<h1 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h1><p>1.在一天改了多次飞塔防火墙策略后觉得有点麻烦（页面点点点），想更加便利。<br>2.一直想做一个属于网络的应用网站</p><h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>使用了python、vue生成后端和前端（只会这两），一开始做了两个docker放在oracle的虚拟机，发现更新版本实在是太麻烦了，每次都需要重新run，build，那么直接把dist上传，docker-nginx只需要git pull一下就好。</p><p>cli_creator（前端）在本地调试-build生成dist文件夹，把dist文件夹上传到github，然后在虚拟机git pull这个文件夹，docker-nginx映射此目录，每次开发完代码，只需要在虚拟机git pull，甚至可以做成自动每晚git pull自动更新。</p><p>cli_creator_backend（后端），目前还是整体代码上传github，在虚拟机利用dockerfile做images，然后更新，下一步就是把他也做成这个样子。</p><h1 id="希望"><a href="#希望" class="headerlink" title="希望"></a>希望</h1><p>希望能把这个小项目持续的运营下去，多增加一些功能。oracle虚拟机免费，域名需要一点成本，加油。</p><h1 id="项目的截图"><a href="#项目的截图" class="headerlink" title="项目的截图"></a>项目的截图</h1><img src="/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/cli_creator.png" class="">]]></content>
+    
+    
+    <categories>
+      
+      <category>网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+      <tag>vue</tag>
+      
+      <tag>django</tag>
+      
+      <tag>前端</tag>
+      
+      <tag>后端</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>b站直播间AI自动回复弹幕</title>
     <link href="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/"/>
     <url>/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/</url>

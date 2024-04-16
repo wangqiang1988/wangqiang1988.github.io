@@ -16,19 +16,22 @@
   <meta name="author" content="WangQiang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="初衷起初弄了个24小时音乐直播间，里面都是一些从网上down的音乐，供大家听听，背景图是bing的壁纸，后来陆续有网友（虽然很少）开始打卡，我就想看看大家的反馈，所以就把弹幕通过blivedm推送到了微信企业号的应用中，能实时查看。后来我想要回复，并且通过ai回复，就得借助不正当手段进行回复（构造b站send的data数据），后来在b站开发者群里问，没有相对应的api，但是有群友提供了新思路，为什">
+    <meta name="description" content="初衷1.在一天改了多次飞塔防火墙策略后觉得有点麻烦（页面点点点），想更加便利。2.一直想做一个属于网络的应用网站 过程使用了python、vue生成后端和前端（只会这两），一开始做了两个docker放在oracle的虚拟机，发现更新版本实在是太麻烦了，每次都需要重新run，build，那么直接把dist上传，docker-nginx只需要git pull一下就好。 cli_creator（前端）在">
 <meta property="og:type" content="article">
-<meta property="og:title" content="b站直播间AI自动回复弹幕">
-<meta property="og:url" content="http://example.com/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/index.html">
+<meta property="og:title" content="一次粗糙的上线应用程序 cli_creator">
+<meta property="og:url" content="http://example.com/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/index.html">
 <meta property="og:site_name" content="WangQiang Blog">
-<meta property="og:description" content="初衷起初弄了个24小时音乐直播间，里面都是一些从网上down的音乐，供大家听听，背景图是bing的壁纸，后来陆续有网友（虽然很少）开始打卡，我就想看看大家的反馈，所以就把弹幕通过blivedm推送到了微信企业号的应用中，能实时查看。后来我想要回复，并且通过ai回复，就得借助不正当手段进行回复（构造b站send的data数据），后来在b站开发者群里问，没有相对应的api，但是有群友提供了新思路，为什">
+<meta property="og:description" content="初衷1.在一天改了多次飞塔防火墙策略后觉得有点麻烦（页面点点点），想更加便利。2.一直想做一个属于网络的应用网站 过程使用了python、vue生成后端和前端（只会这两），一开始做了两个docker放在oracle的虚拟机，发现更新版本实在是太麻烦了，每次都需要重新run，build，那么直接把dist上传，docker-nginx只需要git pull一下就好。 cli_creator（前端）在">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/python.jpg">
-<meta property="article:published_time" content="2024-04-07T06:12:14.000Z">
-<meta property="article:modified_time" content="2024-04-07T06:34:33.844Z">
+<meta property="article:published_time" content="2024-04-16T07:53:17.000Z">
+<meta property="article:modified_time" content="2024-04-16T08:04:22.480Z">
 <meta property="article:author" content="WangQiang">
-<meta property="article:tag" content="直播">
 <meta property="article:tag" content="python">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="后端">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/img/python.jpg">
   
@@ -36,7 +39,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>b站直播间AI自动回复弹幕 - WangQiang Blog</title>
+  <title>一次粗糙的上线应用程序 cli_creator - WangQiang Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -218,7 +221,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="b站直播间AI自动回复弹幕"></span>
+            <span id="subtitle" data-typed-text="一次粗糙的上线应用程序 cli_creator"></span>
           
         </div>
 
@@ -229,8 +232,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-07 14:12" pubdate>
-          2024年4月7日 下午
+        <time datetime="2024-04-16 15:53" pubdate>
+          2024年4月16日 下午
         </time>
       </span>
     
@@ -241,7 +244,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          539 字
+          458 字
         
       </span>
     
@@ -252,7 +255,7 @@
         
         
         
-          5 分钟
+          4 分钟
         
       </span>
     
@@ -298,23 +301,17 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">b站直播间AI自动回复弹幕</h1>
+            <h1 style="display: none">一次粗糙的上线应用程序 cli_creator</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h1><p>起初弄了个24小时音乐直播间，里面都是一些从网上down的音乐，供大家听听，背景图是bing的壁纸，后来陆续有网友（虽然很少）开始打卡，我就想看看大家的反馈，所以就把弹幕通过blivedm推送到了微信企业号的应用中，能实时查看。后来我想要回复，并且通过ai回复，就得借助不正当手段进行回复（构造b站send的data数据），后来在b站开发者群里问，没有相对应的api，但是有群友提供了新思路，为什么一定要答复呢，让回复能显示就行了啊，接下来就有了这个流程。</p>
-<h1 id="接收弹幕"><a href="#接收弹幕" class="headerlink" title="接收弹幕"></a>接收弹幕</h1><p>使用blivechat进行弹幕接收，并且通过程序的前端使用obs推到直播中，这样，网友的弹幕就能显示在屏幕中了。使用blivechat docker部署，很容易就能轻而易举地获取到弹幕。</p>
-<img src="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/receive1.png" srcset="/img/loading.gif" lazyload class="">
-<p>注意开启服务器转发，不然后续没法处理后续的弹幕消息。</p>
-<img src="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/receive2.png" srcset="/img/loading.gif" lazyload class="">
-
-<h1 id="处理弹幕，显示弹幕"><a href="#处理弹幕，显示弹幕" class="headerlink" title="处理弹幕，显示弹幕"></a>处理弹幕，显示弹幕</h1><p>处理弹幕使用的google的gemini，通过api把blivechat接收到的弹幕通过gemini进行回复。找到blivechat&#x2F;services&#x2F;chat.py中红色位置（我使用的是身份码，如果使用房间id的话是上面跟这个差不多的结构），然后绿色部分是gemini的处理流程和弹幕展示</p>
-<img src="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/gemini1.png" srcset="/img/loading.gif" lazyload class="">
-
-<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>这样就有了这个能通过ai回复弹幕的直播间。</p>
-<img src="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/result.png" srcset="/img/loading.gif" lazyload class="">
-
+                <h1 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h1><p>1.在一天改了多次飞塔防火墙策略后觉得有点麻烦（页面点点点），想更加便利。<br>2.一直想做一个属于网络的应用网站</p>
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>使用了python、vue生成后端和前端（只会这两），一开始做了两个docker放在oracle的虚拟机，发现更新版本实在是太麻烦了，每次都需要重新run，build，那么直接把dist上传，docker-nginx只需要git pull一下就好。</p>
+<p>cli_creator（前端）在本地调试-build生成dist文件夹，把dist文件夹上传到github，然后在虚拟机git pull这个文件夹，docker-nginx映射此目录，每次开发完代码，只需要在虚拟机git pull，甚至可以做成自动每晚git pull自动更新。</p>
+<p>cli_creator_backend（后端），目前还是整体代码上传github，在虚拟机利用dockerfile做images，然后更新，下一步就是把他也做成这个样子。</p>
+<h1 id="希望"><a href="#希望" class="headerlink" title="希望"></a>希望</h1><p>希望能把这个小项目持续的运营下去，多增加一些功能。oracle虚拟机免费，域名需要一点成本，加油。</p>
+<h1 id="项目的截图"><a href="#项目的截图" class="headerlink" title="项目的截图"></a>项目的截图</h1><img src="/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/cli_creator.png" srcset="/img/loading.gif" lazyload class="">
                 
               </div>
             
@@ -332,7 +329,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/python/" class="category-chain-item">python</a>
+  <a href="/categories/%E7%BD%91%E7%BB%9C/" class="category-chain-item">网络</a>
   
   
 
@@ -347,9 +344,15 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%9B%B4%E6%92%AD/">#直播</a>
-      
         <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/vue/">#vue</a>
+      
+        <a href="/tags/django/">#django</a>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/">#前端</a>
+      
+        <a href="/tags/%E5%90%8E%E7%AB%AF/">#后端</a>
       
     </div>
   
@@ -361,8 +364,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>b站直播间AI自动回复弹幕</div>
-      <div>http://example.com/2024/04/07/b站直播间AI自动回复弹幕/</div>
+      <div>一次粗糙的上线应用程序 cli_creator</div>
+      <div>http://example.com/2024/04/16/一次粗糙的上线应用程序-cli-creator/</div>
     </div>
     <div class="license-meta">
       
@@ -374,7 +377,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年4月7日</div>
+          <div>2024年4月16日</div>
         </div>
       
       
@@ -404,9 +407,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/" title="一次粗糙的上线应用程序 cli_creator">
+                      <a href="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/" title="网络工程师排错笔记-长更">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">一次粗糙的上线应用程序 cli_creator</span>
+                        <span class="hidden-mobile">网络工程师排错笔记-长更</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -414,8 +417,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/20/%E7%9C%9F%E5%8E%9F%E5%8C%BB-%E6%9D%A8%E5%AE%9A%E4%B8%80/" title="真原医-杨定一">
-                        <span class="hidden-mobile">真原医-杨定一</span>
+                      <a href="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/" title="b站直播间AI自动回复弹幕">
+                        <span class="hidden-mobile">b站直播间AI自动回复弹幕</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
