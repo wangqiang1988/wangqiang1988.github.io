@@ -16,30 +16,28 @@
   <meta name="author" content="WangQiang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="初衷1.在一天改了多次飞塔防火墙策略后觉得有点麻烦（页面点点点），想更加便利。2.一直想做一个属于网络的应用网站 过程使用了python、vue生成后端和前端（只会这两），一开始做了两个docker放在oracle的虚拟机，发现更新版本实在是太麻烦了，每次都需要重新run，build，那么直接把dist上传，docker-nginx只需要git pull一下就好。 cli_creator（前端）在">
+    <meta name="description" content="今天因为没注意踩了个mysql的坑，先说结论，datetime(6)不支持Like 模糊查询 过程本地调试环境晕了吧唧的应该是手动创建的数据库，创建的是datetime类型数据，生产上面migrate创建的数据库，导致两个表的datetime类型不一致，一个是datetime一个是datetime(6)，每次查询的时候都报错1271,”Illegal mix of collations for o">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一次粗糙的上线应用程序 cli_creator">
-<meta property="og:url" content="http://example.com/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/index.html">
+<meta property="og:title" content="mysql datetime(6)">
+<meta property="og:url" content="http://example.com/2024/04/23/mysql-datetime-6/index.html">
 <meta property="og:site_name" content="WangQiang Blog">
-<meta property="og:description" content="初衷1.在一天改了多次飞塔防火墙策略后觉得有点麻烦（页面点点点），想更加便利。2.一直想做一个属于网络的应用网站 过程使用了python、vue生成后端和前端（只会这两），一开始做了两个docker放在oracle的虚拟机，发现更新版本实在是太麻烦了，每次都需要重新run，build，那么直接把dist上传，docker-nginx只需要git pull一下就好。 cli_creator（前端）在">
+<meta property="og:description" content="今天因为没注意踩了个mysql的坑，先说结论，datetime(6)不支持Like 模糊查询 过程本地调试环境晕了吧唧的应该是手动创建的数据库，创建的是datetime类型数据，生产上面migrate创建的数据库，导致两个表的datetime类型不一致，一个是datetime一个是datetime(6)，每次查询的时候都报错1271,”Illegal mix of collations for o">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/img/python.jpg">
-<meta property="article:published_time" content="2024-04-16T07:53:17.000Z">
-<meta property="article:modified_time" content="2024-04-16T08:04:22.480Z">
+<meta property="og:image" content="http://example.com/img/mysql.png">
+<meta property="article:published_time" content="2024-04-23T08:50:04.000Z">
+<meta property="article:modified_time" content="2024-04-23T09:01:36.758Z">
 <meta property="article:author" content="WangQiang">
 <meta property="article:tag" content="python">
-<meta property="article:tag" content="vue">
 <meta property="article:tag" content="django">
-<meta property="article:tag" content="前端">
-<meta property="article:tag" content="后端">
+<meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/python.jpg">
+<meta name="twitter:image" content="http://example.com/img/mysql.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>一次粗糙的上线应用程序 cli_creator - WangQiang Blog</title>
+  <title>mysql datetime(6) - WangQiang Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -221,7 +219,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="一次粗糙的上线应用程序 cli_creator"></span>
+            <span id="subtitle" data-typed-text="mysql datetime(6)"></span>
           
         </div>
 
@@ -232,8 +230,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-16 15:53" pubdate>
-          2024年4月16日 下午
+        <time datetime="2024-04-23 16:50" pubdate>
+          2024年4月23日 下午
         </time>
       </span>
     
@@ -244,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          458 字
+          428 字
         
       </span>
     
@@ -301,17 +299,18 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">一次粗糙的上线应用程序 cli_creator</h1>
+            <h1 style="display: none">mysql datetime(6)</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h1><p>1.在一天改了多次飞塔防火墙策略后觉得有点麻烦（页面点点点），想更加便利。<br>2.一直想做一个属于网络的应用网站</p>
-<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>使用了python、vue生成后端和前端（只会这两），一开始做了两个docker放在oracle的虚拟机，发现更新版本实在是太麻烦了，每次都需要重新run，build，那么直接把dist上传，docker-nginx只需要git pull一下就好。</p>
-<p>cli_creator（前端）在本地调试-build生成dist文件夹，把dist文件夹上传到github，然后在虚拟机git pull这个文件夹，docker-nginx映射此目录，每次开发完代码，只需要在虚拟机git pull，甚至可以做成自动每晚git pull自动更新。</p>
-<p>cli_creator_backend（后端），目前还是整体代码上传github，在虚拟机利用dockerfile做images，然后更新，下一步就是把他也做成这个样子。</p>
-<h1 id="希望"><a href="#希望" class="headerlink" title="希望"></a>希望</h1><p>希望能把这个小项目持续的运营下去，多增加一些功能。oracle虚拟机免费，域名需要一点成本，加油。</p>
-<h1 id="项目的截图"><a href="#项目的截图" class="headerlink" title="项目的截图"></a>项目的截图</h1><img src="/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/cli_creator.png" srcset="/img/loading.gif" lazyload class="">
+                <p>今天因为没注意踩了个mysql的坑，先说结论，datetime(6)不支持Like 模糊查询</p>
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>本地调试环境晕了吧唧的应该是手动创建的数据库，创建的是datetime类型数据，生产上面migrate创建的数据库，导致两个表的datetime类型不一致，一个是datetime一个是datetime(6)，每次查询的时候都报错1271,”Illegal mix of collations for operation like”</p>
+<img src="/2024/04/23/mysql-datetime-6/error1.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>然后问了一下大佬，调试各种字符集，没有结果，后来打印了django的运行过程，把django生成的sql直接在数据库执行，发现不能用，然后一点一点删，发现查询datetime删除就好了（其实并不应该用like查询datetime），但是开发环境没问题，因为开发环境用的是datetime，所以折腾了不少时间。</p>
+<h1 id="切记"><a href="#切记" class="headerlink" title="切记"></a>切记</h1><p>一定不要用like查询datetime！！！<br>一定不要用like查询datetime！！！<br>一定不要用like查询datetime！！！</p>
+
                 
               </div>
             
@@ -329,8 +328,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%BD%91%E7%BB%9C/" class="category-chain-item">网络</a>
+  <a href="/categories/python/" class="category-chain-item">python</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/python/mysql/" class="category-chain-item">mysql</a>
+  
+  
+
   
 
       </span>
@@ -346,13 +352,9 @@
       
         <a href="/tags/python/">#python</a>
       
-        <a href="/tags/vue/">#vue</a>
-      
         <a href="/tags/django/">#django</a>
       
-        <a href="/tags/%E5%89%8D%E7%AB%AF/">#前端</a>
-      
-        <a href="/tags/%E5%90%8E%E7%AB%AF/">#后端</a>
+        <a href="/tags/mysql/">#mysql</a>
       
     </div>
   
@@ -364,8 +366,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>一次粗糙的上线应用程序 cli_creator</div>
-      <div>http://example.com/2024/04/16/一次粗糙的上线应用程序-cli-creator/</div>
+      <div>mysql datetime(6)</div>
+      <div>http://example.com/2024/04/23/mysql-datetime-6/</div>
     </div>
     <div class="license-meta">
       
@@ -377,7 +379,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年4月16日</div>
+          <div>2024年4月23日</div>
         </div>
       
       
@@ -407,9 +409,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/04/23/mysql-datetime-6/" title="mysql datetime(6)">
+                      <a href="/2053/12/31/%E7%BD%91%E7%BB%9C%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0-%E9%95%BF%E6%9B%B4/" title="网络工程师排错笔记-长更">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">mysql datetime(6)</span>
+                        <span class="hidden-mobile">网络工程师排错笔记-长更</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -417,8 +419,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/04/07/b%E7%AB%99%E7%9B%B4%E6%92%AD%E9%97%B4AI%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D%E5%BC%B9%E5%B9%95/" title="b站直播间AI自动回复弹幕">
-                        <span class="hidden-mobile">b站直播间AI自动回复弹幕</span>
+                      <a href="/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/" title="一次粗糙的上线应用程序 cli_creator">
+                        <span class="hidden-mobile">一次粗糙的上线应用程序 cli_creator</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

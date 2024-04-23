@@ -29,6 +29,37 @@
   
   
   <entry>
+    <title>mysql datetime(6)</title>
+    <link href="/2024/04/23/mysql-datetime-6/"/>
+    <url>/2024/04/23/mysql-datetime-6/</url>
+    
+    <content type="html"><![CDATA[<p>今天因为没注意踩了个mysql的坑，先说结论，datetime(6)不支持Like 模糊查询</p><h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>本地调试环境晕了吧唧的应该是手动创建的数据库，创建的是datetime类型数据，生产上面migrate创建的数据库，导致两个表的datetime类型不一致，一个是datetime一个是datetime(6)，每次查询的时候都报错1271,”Illegal mix of collations for operation like”</p><img src="/2024/04/23/mysql-datetime-6/error1.png" class=""><p>然后问了一下大佬，调试各种字符集，没有结果，后来打印了django的运行过程，把django生成的sql直接在数据库执行，发现不能用，然后一点一点删，发现查询datetime删除就好了（其实并不应该用like查询datetime），但是开发环境没问题，因为开发环境用的是datetime，所以折腾了不少时间。</p><h1 id="切记"><a href="#切记" class="headerlink" title="切记"></a>切记</h1><p>一定不要用like查询datetime！！！<br>一定不要用like查询datetime！！！<br>一定不要用like查询datetime！！！</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>python</category>
+      
+      <category>mysql</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+      <tag>django</tag>
+      
+      <tag>mysql</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>一次粗糙的上线应用程序 cli_creator</title>
     <link href="/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/"/>
     <url>/2024/04/16/%E4%B8%80%E6%AC%A1%E7%B2%97%E7%B3%99%E7%9A%84%E4%B8%8A%E7%BA%BF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-cli-creator/</url>
