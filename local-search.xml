@@ -29,6 +29,35 @@
   
   
   <entry>
+    <title>运营商限制UDP解决串流问题</title>
+    <link href="/2024/09/10/%E8%BF%90%E8%90%A5%E5%95%86%E9%99%90%E5%88%B6UDP%E8%A7%A3%E5%86%B3%E4%B8%B2%E6%B5%81%E9%97%AE%E9%A2%98/"/>
+    <url>/2024/09/10/%E8%BF%90%E8%90%A5%E5%95%86%E9%99%90%E5%88%B6UDP%E8%A7%A3%E5%86%B3%E4%B8%B2%E6%B5%81%E9%97%AE%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>近期经常串流ps5玩游戏，有一天出门带着罗技云掌机想玩玩，发现父母家的udp被qos的厉害，直接映射的主机竟然都连不上，用wg隧道回家偶尔出现速率低，呈现就是画面卡顿或者模糊。</p><h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>如果是udp被限制的厉害，那么用tcp会不会能解决呢，那就做个测试吧，家里有个闲置的树莓派3，使用udp2raw项目，把udp转换成tcp从公网出去。</p><h1 id="方案拓扑-amp-说明"><a href="#方案拓扑-amp-说明" class="headerlink" title="方案拓扑&amp;说明"></a>方案拓扑&amp;说明</h1><img src="/2024/09/10/%E8%BF%90%E8%90%A5%E5%95%86%E9%99%90%E5%88%B6UDP%E8%A7%A3%E5%86%B3%E4%B8%B2%E6%B5%81%E9%97%AE%E9%A2%98/udp2raw.png" class=""><p>拓扑如上，其实拓扑标注的挺清楚的，用文字描述就是：树莓派放在有问题的一端，然后把wireguard的端口从udp转换为tcp，然后用tcp走公网出去，到达目标udp2raw的服务端公网ip，再通过服务端把tcp端口进行还原，实现端到udp2raw走udp，udp2raw-c到udp2raw-s走tcp，这样绕过运营商的udp限制。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>PS5</tag>
+      
+      <tag>网络</tag>
+      
+      <tag>串流</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>mysql datetime(6)</title>
     <link href="/2024/04/23/mysql-datetime-6/"/>
     <url>/2024/04/23/mysql-datetime-6/</url>
@@ -49,9 +78,9 @@
       
       <tag>python</tag>
       
-      <tag>django</tag>
-      
       <tag>mysql</tag>
+      
+      <tag>django</tag>
       
     </tags>
     
@@ -78,9 +107,9 @@
       
       <tag>python</tag>
       
-      <tag>vue</tag>
-      
       <tag>django</tag>
+      
+      <tag>vue</tag>
       
       <tag>前端</tag>
       
@@ -308,9 +337,9 @@
     
     <tags>
       
-      <tag>生活</tag>
-      
       <tag>跑步</tag>
+      
+      <tag>生活</tag>
       
     </tags>
     
@@ -362,9 +391,9 @@
     
     <tags>
       
-      <tag>生活</tag>
-      
       <tag>跑步</tag>
+      
+      <tag>生活</tag>
       
     </tags>
     
